@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>府城綠色食光：食物里程與 AI 智慧低碳物流車</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', 'Noto Sans TC', sans-serif;
+      background-color: #fafaf7; /* 清爽米白 */
+      color: #1e293b;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Smooth Tab Transitions */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .tab-panel {
+      display: none;
+      animation: fadeIn 0.3s ease-out;
+    }
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* Shake Animation for Wrong Password */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+    .animate-shake {
+      animation: shake 0.38s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+
+    /* Navigation Tabs */
+    .nav-tab {
+      transition: all 0.22s ease;
+    }
+    .nav-tab.active {
+      background-color: #15803d; /* 低碳森林綠 */
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(21, 128, 61, 0.35);
+    }
+
+    /* LEGO Concept Card Highlighting */
+    .concept-card {
+      transition: all 0.25s ease;
+    }
+    .concept-card.highlighted {
+      transform: translateY(-4px);
+      border-color: #15803d !important;
+      background-color: #f0fdf4 !important;
+      box-shadow: 0 14px 28px -6px rgba(21, 128, 61, 0.25);
+    }
+    .concept-card.dimmed {
+      opacity: 0.35;
+    }
+    .svg-hotspot {
+      cursor: pointer;
+    }
+
+    /* Scratch 3.0 Visual Blocks */
+    .scratch-hat { background: #FFBF00; border: 1px solid #CC9900; border-radius: 14px 14px 4px 4px; color: #fff; text-shadow: 0 1px 1px rgba(0,0,0,0.2); }
+    .scratch-motion { background: #4C97FF; border: 1px solid #3373CC; border-radius: 4px; color: #fff; }
+    .scratch-control { background: #FFAB19; border: 1px solid #CF8B17; border-radius: 4px; color: #fff; }
+    .scratch-sensing { background: #5CB1D6; border: 1px solid #2E8EB8; border-radius: 10px; color: #fff; }
+    .scratch-variable { background: #FF8C1A; border: 1px solid #DB6E00; border-radius: 4px; color: #fff; }
+    .scratch-myblock { background: #FF6680; border: 1px solid #FF3355; border-radius: 4px; color: #fff; }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    @media print {
+      .no-print { display: none !important; }
+      body { background: #ffffff !important; }
+      .tab-panel.active { display: block !important; }
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- ==================== 頂部橫幅與 8 個獨立導覽分頁 ==================== -->
+  <header class="bg-gradient-to-br from-emerald-900 via-green-800 to-teal-900 text-white shadow-lg sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="bg-amber-400 text-green-950 text-xs font-black px-3 py-0.5 rounded-full tracking-wide shadow-sm">
+              臺南市零碳餐桌 × SDGs 12 永續食農
+            </span>
+            <span class="text-xs text-amber-200 font-bold hidden sm:inline">
+              10 歲（五年級）零基礎友好設計
+            </span>
+          </div>
+          <h1 class="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight mt-1 text-white">
+            府城綠色食光：食物里程與 AI 智慧低碳物流車
+          </h1>
+          <p class="text-xs sm:text-sm text-emerald-100 font-medium mt-0.5">
+            五年級跨域 PBL 專案（自然科學 × 數學 × 運算思維 × LEGO SPIKE Prime）
+          </p>
+        </div>
+
+        <div class="no-print flex items-center gap-2">
+          <button onclick="window.print()" class="px-3.5 py-2 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-extrabold flex items-center gap-1.5 transition cursor-pointer">
+            🖨️ 列印當前分頁
+          </button>
+          <button onclick="lockOverviewTab()" id="relock-btn" class="hidden px-3.5 py-2 rounded-xl bg-amber-400 text-green-950 hover:bg-amber-300 text-xs font-black flex items-center gap-1 transition cursor-pointer shadow">
+            🔒 鎖定課程總覽
+          </button>
+        </div>
+      </div>
+
+      <!-- 8 個獨立分頁按鈕（皆不加 1. 2. 3. 數字編號） -->
+      <nav aria-label="課程八大核心分頁" class="no-print mt-4 flex overflow-x-auto no-scrollbar gap-2 pb-1">
+        <button onclick="switchTab('tab-context')" id="btn-tab-context" class="nav-tab active flex-shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-white/10 hover:bg-white/20 cursor-pointer">
+          真實情境問題
+        </button>
+        <button onclick="switchTab('tab-prior')" id="btn-tab-prior" class="nav-tab flex-shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-white/10 hover:bg-white/20 cursor-pointer">
+          先備經驗
+        </button>
+        <button onclick="switchTab('tab-science')" id="btn-tab-science" class="nav-tab flex-shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-white/10 hover:bg-white/20 cursor-pointer">
+          科學概念
+        </button>
+        <button onclick="switchTab('tab-scratch')" id="btn-tab-scratch" class="nav-tab flex-shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-white/10 hover:bg-white/20 cursor-pointer">
+          Scratch 設計
+        </button>
+        <button onclick="switchTab('tab-lego')" id="btn-tab-lego" class="nav-tab flex-shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-white/10 hover:bg-white/20 cursor-pointer">
+          LEGO 機器人設計
+        </button>
+        <button onclick="switchTab('tab-comp')" id="btn-tab-comp" class="nav-tab flex-shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-white/10 hover:bg-white/20 cursor-pointer">
+          比賽規則
+        </button>
+        <button onclick="switchTab('tab-advocacy')" id="btn-tab-advocacy" class="nav-tab flex-shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-white/10 hover:bg-white/20 cursor-pointer">
+          倡議活動
+        </button>
+        <button onclick="switchTab('tab-overview')" id="btn-tab-overview" class="nav-tab flex-shrink-0 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-extrabold bg-amber-400/20 hover:bg-amber-400/35 text-amber-200 border border-amber-400/40 flex items-center gap-1.5 cursor-pointer">
+          <span id="overview-lock-icon">🔒</span> 課程總覽
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ==================== MAIN CONTENT AREA ==================== -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 py-8 space-y-8">
+
+    <!-- ========================================================= -->
+    <!-- 分頁一：真實情境問題（預設開啟首頁）                      -->
+    <!-- ========================================================= -->
+    <section id="tab-context" class="tab-panel active space-y-8">
+      
+      <!-- Driving Question Card -->
+      <div class="bg-white rounded-3xl shadow-sm border-l-8 border-green-700 p-6 sm:p-8 relative overflow-hidden">
+        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+          <span class="inline-flex items-center gap-1.5 bg-green-100 text-green-800 text-xs font-black px-3 py-1 rounded-full">
+            🧭 臺南市政府「零碳餐桌計畫」× 學校營養午餐「三章一Q」
+          </span>
+          <span class="text-xs font-bold text-amber-700 bg-amber-50 border border-amber-200 px-3 py-1 rounded-full">
+            任務身分：綠能智慧物流中心實習工程師
+          </span>
+        </div>
+        <h2 class="text-lg sm:text-xl font-black text-green-800 mb-2">核心探究問題（Driving Question）</h2>
+        <blockquote class="text-base sm:text-xl font-extrabold text-slate-800 leading-relaxed">
+          「我們每天吃的食物從產地運到餐桌，往往因為長途跨國運輸與物流路線繞行而產生大量碳排放；身為綠能物流工程師，我們該如何透過 <span class="text-green-700 underline decoration-amber-400 decoration-4 underline-offset-4">AI 感測與最短路徑演算法</span> 設計一台智慧物流車，優先分檢並配送『在地當季食材』，同時引導大家在日常生活中實踐低碳飲食？」
+        </blockquote>
+      </div>
+
+      <!-- Three Hero Food Cargo Boxes -->
+      <div class="space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <h2 class="text-xl font-black text-slate-900 flex items-center gap-2">
+            <span class="w-2.5 h-6 bg-amber-400 rounded-full"></span>
+            三大主角食材貨箱與食物里程碳足跡對照
+          </h2>
+          <span class="text-xs font-bold text-slate-500">1 箱紅色進口牛肉碳排 ＝ 40 箱綠色臺南在地青菜！</span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Green Cargo Box -->
+          <div class="bg-white rounded-3xl shadow-sm border-2 border-green-600 p-6 flex flex-col justify-between hover:shadow-md transition">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="bg-green-100 text-green-800 text-xs font-black px-3 py-1 rounded-full">🟢 綠色貨箱・在地旬味</span>
+                <span class="text-xl font-black text-green-700">0.2 kg CO₂e</span>
+              </div>
+              <h3 class="text-lg font-black text-slate-900 mb-2">臺南在地現採農漁產（最優先配送）</h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+                清晨於善化、七股、學甲等地現採現撈，食物里程極短、冷鏈耗電最低，也是學校營養午餐「三章一Q」國產可溯源的首選食材！
+              </p>
+            </div>
+            <div class="bg-green-50 border border-green-200 rounded-2xl p-3.5 text-xs font-bold text-green-900 space-y-1">
+              <div>📍 代表食材：臺南七股文蛤、學甲虱目魚、在地青江菜</div>
+              <div class="text-green-700">🏆 物流競賽獎勵：+150 分 / 顆（最高積分）</div>
+            </div>
+          </div>
+
+          <!-- Yellow Cargo Box -->
+          <div class="bg-white rounded-3xl shadow-sm border-2 border-amber-400 p-6 flex flex-col justify-between hover:shadow-md transition">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="bg-amber-100 text-amber-900 text-xs font-black px-3 py-1 rounded-full">🟡 黃色貨箱・國內跨縣</span>
+                <span class="text-xl font-black text-amber-600">1.5 kg CO₂e</span>
+              </div>
+              <h3 class="text-lg font-black text-slate-900 mb-2">臺灣本島跨縣市季節農產</h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+                透過高速公路貨車從台中梨山或屏東產地跨縣市南來北往運送，具有中等食物里程與運輸燃油消耗。
+              </p>
+            </div>
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 text-xs font-bold text-amber-950 space-y-1">
+              <div>📍 代表食材：台中梨山水果、屏東愛文芒果</div>
+              <div class="text-amber-700">🏆 物流競賽獎勵：+100 分 / 顆（中等積分）</div>
+            </div>
+          </div>
+
+          <!-- Red Cargo Box -->
+          <div class="bg-white rounded-3xl shadow-sm border-2 border-rose-500 p-6 flex flex-col justify-between hover:shadow-md transition">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="bg-rose-100 text-rose-800 text-xs font-black px-3 py-1 rounded-full">🔴 紅色貨箱・跨海進口</span>
+                <span class="text-xl font-black text-rose-600">8.0 kg CO₂e</span>
+              </div>
+              <h3 class="text-lg font-black text-slate-900 mb-2">跨國空運與遠洋冷凍食材</h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mb-4">
+                搭飛機或貨輪漂洋過海數千公里來臺，全程需高耗能冷凍設備維持低溫，碳足跡高達在地青菜的 40 倍！
+              </p>
+            </div>
+            <div class="bg-rose-50 border border-rose-200 rounded-2xl p-3.5 text-xs font-bold text-rose-900 space-y-1">
+              <div>📍 代表食材：美國冷凍牛排、進口櫻桃</div>
+              <div class="text-rose-700">🏆 物流競賽獎勵：+50 分 / 顆（高碳排警示）</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Three Real-World Pain Points -->
+      <div class="space-y-4">
+        <h2 class="text-xl font-black text-slate-900 flex items-center gap-2">
+          <span class="w-2.5 h-6 bg-green-700 rounded-full"></span>
+          三大真實生活與工程痛點解析
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 space-y-2.5">
+            <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-black px-3 py-1 rounded-full">飲食端痛點</span>
+            <h3 class="text-base font-black text-slate-900">餐桌上的隱形碳足跡</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              超市與市場貨架上同時擺著臺南在地青江菜與跨海空運牛排，外觀同樣新鮮，背後的運輸里程與冷凍耗能卻相差 40 倍。智慧物流車必須裝上「產地掃描眼」自動辨識並優先配送在地食材。
+            </p>
+          </div>
+
+          <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 space-y-2.5">
+            <span class="inline-block bg-amber-100 text-amber-800 text-xs font-black px-3 py-1 rounded-full">物流端痛點</span>
+            <h3 class="text-base font-black text-slate-900">貨車蛇行與繞路的能源浪費</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              貨車若在道路上左右劇烈擺頭、走 Z 字型或走冤枉路，不僅會撞爛車廂裡的雞蛋與生鮮蔬果，更會白白消耗電力。工程師必須利用感測器與平滑修正演算法，讓車子走出筆直的最短路徑！
+            </p>
+          </div>
+
+          <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 space-y-2.5">
+            <span class="inline-block bg-sky-100 text-sky-800 text-xs font-black px-3 py-1 rounded-full">行動端痛點</span>
+            <h3 class="text-base font-black text-slate-900">從工程師回到消費者的選擇</h3>
+            <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              工程師再怎麼努力寫程式幫貨車省電，若消費者每天都點選長途進口肉品，總碳排依然居高不下。透過競賽雙軌計分板看見碳排數字震撼，進而在日常生活中落實「選在地、吃當季、多蔬食」。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 分頁二：先備經驗（校準中年級三、四年級舊經驗＋偵探測驗）    -->
+    <!-- ========================================================= -->
+    <section id="tab-prior" class="tab-panel space-y-8">
+      
+      <!-- Banner -->
+      <div class="bg-emerald-50 border border-emerald-200 rounded-3xl p-6 sm:p-8">
+        <span class="text-xs font-extrabold text-green-800 uppercase tracking-wider">嚴格校準五年級開課起點・提取中年級（三、四年級）已學會舊經驗</span>
+        <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">從 10 歲孩子在三、四年級已掌握的學科與生活經驗出發</h2>
+        <p class="text-xs sm:text-sm text-slate-700 mt-2 leading-relaxed">
+          不假設任何程式或機器人先修經驗！我們直接喚起學生在<strong>三年級與四年級數學、社會、資訊與日常生活</strong>中已經學會的能力，作為理解智慧物流車演算法與碳排計算的穩固鷹架。
+        </p>
+      </div>
+
+      <!-- Three Core Prior Knowledge Domains -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <!-- Math Foundation -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 border-t-4 border-sky-600 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="bg-sky-100 text-sky-800 text-xs font-black px-3 py-1 rounded-full">數學基礎（三、四年級習得）</span>
+            <span class="text-2xl">📐</span>
+          </div>
+          <h3 class="text-lg font-black text-slate-900">長度公分、直角 90° 與一位小數</h3>
+          <ul class="space-y-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
+            <li>• <strong>三年級長度測量（公分 cm）：</strong>能用直尺量測公分，直接對應「車輪轉 1 圈前進約 17.5 公分，前進 35 公分需轉 2 圈」的距離換算。</li>
+            <li>• <strong>四年級角度測量：</strong>認識正方形四個角都是 <strong>90 度直角</strong>與旋轉角，理解車身轉彎與陀螺儀航向角度。</li>
+            <li>• <strong>四年級一位小數加減與平均數：</strong>直接累加食物碳排（<code class="bg-slate-100 px-1 rounded font-bold">0.2 + 1.5 + 8.0 kg</code>）並計算黑白反射光中心門檻。</li>
+          </ul>
+        </div>
+
+        <!-- Social & Daily Life Foundation -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 border-t-4 border-green-600 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="bg-green-100 text-green-800 text-xs font-black px-3 py-1 rounded-full">社會與生活基礎（中年級習得）</span>
+            <span class="text-2xl">🌾</span>
+          </div>
+          <h3 class="text-lg font-black text-slate-900">家鄉物產認知、營養午餐與紅燈停</h3>
+          <ul class="space-y-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
+            <li>• <strong>中年級社會家鄉物產：</strong>認識臺南在地農漁特產（七股文蛤、學甲虱目魚、關廟鳳梨、在地青菜）與外地進口食物的運輸差異。</li>
+            <li>• <strong>學校營養午餐產地標示：</strong>每天看過午餐菜單與「三章一Q」可溯源標章，具備食物從產地運到學校的生活常識。</li>
+            <li>• <strong>日常交通與乘車經驗：</strong>熟悉「紅燈停、綠燈行」規則，以及「坐車一直左右急轉會暈車、繞遠路更耗油」的身體直覺。</li>
+          </ul>
+        </div>
+
+        <!-- ICT Foundation -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 border-t-4 border-amber-500 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="bg-amber-100 text-amber-900 text-xs font-black px-3 py-1 rounded-full">資訊科技基礎（三、四年級習得）</span>
+            <span class="text-2xl">🖱️</span>
+          </div>
+          <h3 class="text-lg font-black text-slate-900">基礎滑鼠拖曳與積木堆疊操作</h3>
+          <ul class="space-y-2 text-xs sm:text-sm text-slate-600 leading-relaxed">
+            <li>• <strong>數位操作能力：</strong>具備開啟電腦瀏覽器或平板軟體、使用滑鼠精準拖曳指令積木、上下拼接積木方塊的基本操作能力。</li>
+            <li>• <strong>測試與觀察習慣：</strong>知道點擊啟動按鈕觀察畫面變化，能依據結果調整積木參數。</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Interactive Quiz: 餐桌產地小偵探 (6 Specific Questions) -->
+      <div class="bg-white rounded-3xl shadow-md border border-slate-200 p-6 sm:p-8 space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+          <div>
+            <span class="text-xs font-extrabold text-green-700 uppercase tracking-wider">課前暖身互動分類小測驗</span>
+            <h3 class="text-xl font-black text-slate-900 mt-0.5">🔍 餐桌產地小偵探：6 種常見食材里程分類挑戰</h3>
+            <p class="text-xs sm:text-sm text-slate-600 mt-1">請運用你在中年級社會與生活中學到的產地知識，點擊「🟢 在地、🟡 國內、🔴 進口」按鈕，即時查看食物里程說明與碳排數值！</p>
+          </div>
+          <div class="bg-amber-50 border border-amber-300 px-4 py-2.5 rounded-2xl text-right flex-shrink-0">
+            <div class="text-[11px] font-bold text-amber-800">偵探挑戰得分</div>
+            <div class="text-xl font-black text-green-800"><span id="detective-score">0</span> / 6 題答對</div>
+          </div>
+        </div>
+
+        <div id="detective-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 分頁三：科學概念（十二年國教自然領綱 -Ⅱ- / -Ⅲ- ＋模擬器）  -->
+    <!-- ========================================================= -->
+    <section id="tab-science" class="tab-panel space-y-8">
+      
+      <!-- Curriculum Standard Header -->
+      <div class="bg-gradient-to-r from-emerald-900 to-teal-800 text-white rounded-3xl p-6 sm:p-8 shadow-sm">
+        <span class="text-xs font-extrabold text-amber-300 uppercase tracking-wider">十二年國民基本教育自然科學領域課程綱要・學習內容精準對應</span>
+        <h2 class="text-xl sm:text-2xl font-black mt-1">以第二學習階段（中年級 -Ⅱ-）為地基，向上銜接第三學習階段（高年級 -Ⅲ-）</h2>
+        <p class="text-xs sm:text-sm text-emerald-100 mt-1.5 leading-relaxed">
+          將三、四年級已掌握的「光的反射」、「力的作用與摩擦力」及「珍惜資源」轉化為機器人光學感測、雙輪差速控制與減碳路徑優化的科學原理。
+        </p>
+      </div>
+
+      <!-- Three Core Science Pillars (-Ⅱ- to -Ⅲ-) -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Optics -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-2.5">
+            <span class="inline-block bg-sky-100 text-sky-800 text-xs font-black px-3 py-1 rounded-full">光學原理：INb-Ⅱ-5 ➔ INb-Ⅲ-3 / INb-Ⅲ-4</span>
+            <h3 class="text-lg font-black text-slate-900">光的直進、反射與色光辨識</h3>
+            <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-slate-700 leading-relaxed">
+              <strong class="text-emerald-900 block mb-0.5">🟢 中年級地基（INb-Ⅱ-5）：</strong>
+              光的直進與反射現象——感測器發出光線照射地面，<strong>黑色表面吸光多、反射強度低</strong>；<strong>白色表面反光強</strong>，藉此判別黑白軌道交界。
+            </div>
+            <div class="bg-sky-50 border border-sky-200 rounded-xl p-3 text-xs text-slate-700 leading-relaxed">
+              <strong class="text-sky-900 block mb-0.5">🔵 高年級延伸（INb-Ⅲ-3 / INb-Ⅲ-4）：</strong>
+              物質表面性質影響光的反射與吸收，物體反射特定色光呈現綠、黃、紅三色；維持 <strong>0.8~1.2 cm 最佳視距</strong>並加裝遮光設計，避免教室日光燈干擾。
+            </div>
+          </div>
+          <div class="text-xs font-extrabold text-sky-700 bg-slate-50 px-3 py-2 rounded-xl border border-slate-200">
+            👁️ 對應機構：車底黑線顏感 D ＋ 車頭產地顏感 F
+          </div>
+        </div>
+
+        <!-- Force & Motion -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-2.5">
+            <span class="inline-block bg-amber-100 text-amber-900 text-xs font-black px-3 py-1 rounded-full">力與運動：INd-Ⅱ-6/7 ➔ INd-Ⅲ-9/10</span>
+            <h3 class="text-lg font-black text-slate-900">力的作用改變運動與摩擦力差異</h3>
+            <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-slate-700 leading-relaxed">
+              <strong class="text-emerald-900 block mb-0.5">🟢 中年級地基（INd-Ⅱ-6 / INd-Ⅱ-7）：</strong>
+              力的作用可改變物體運動快慢與方向；接觸面材質會影響<strong>摩擦力大小</strong>（解釋電腦 Scratch 無摩擦，但實體樂高輪胎在地板上會打滑走歪）。
+            </div>
+            <div class="bg-sky-50 border border-sky-200 rounded-xl p-3 text-xs text-slate-700 leading-relaxed">
+              <strong class="text-sky-900 block mb-0.5">🔵 高年級延伸（INd-Ⅲ-9 / INd-Ⅲ-10）：</strong>
+              透過左右輪不同推力（<strong>雙輪差速控制</strong>）改變合力方向實現轉向，並利用內建陀螺儀航向修正抵消地面打滑誤差。
+            </div>
+          </div>
+          <div class="text-xs font-extrabold text-amber-800 bg-slate-50 px-3 py-2 rounded-xl border border-slate-200">
+            ⚙️ 對應機構：雙驅動馬達 A/E ＋ 主機內建陀螺儀
+          </div>
+        </div>
+
+        <!-- Energy & Sustainability -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-2.5">
+            <span class="inline-block bg-green-100 text-green-800 text-xs font-black px-3 py-1 rounded-full">能源與永續：INe-Ⅱ-1, INg-Ⅱ-1/2 ➔ INe-Ⅲ-10, INg-Ⅲ-1/2</span>
+            <h3 class="text-lg font-black text-slate-900">節約能源與最短路徑減碳</h3>
+            <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-slate-700 leading-relaxed">
+              <strong class="text-emerald-900 block mb-0.5">🟢 中年級地基（INe-Ⅱ-1 / INg-Ⅱ-1~2）：</strong>
+              自然資源有限，人類生活需依賴資源，過度使用會造成環境問題，需要珍惜資源、節約能源與減少污染。
+            </div>
+            <div class="bg-sky-50 border border-sky-200 rounded-xl p-3 text-xs text-slate-700 leading-relaxed">
+              <strong class="text-sky-900 block mb-0.5">🔵 高年級延伸（INe-Ⅲ-10 / INg-Ⅲ-1~2）：</strong>
+              演算法優化讓物流車走<strong>筆直最短路徑</strong>（不蛇行繞路），直接減少電池電能消耗；結合日常低碳飲食選擇，減緩溫室效應。
+            </div>
+          </div>
+          <div class="text-xs font-extrabold text-green-800 bg-slate-50 px-3 py-2 rounded-xl border border-slate-200">
+            🌱 對應素養：節能最短路線 ＋ 臺南在地低碳飲食
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Interactive Simulator: 虛實摩擦對比暨光感差速模擬器 -->
+      <div class="bg-slate-900 text-white rounded-3xl shadow-xl p-6 sm:p-8 space-y-6">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-700 pb-4">
+          <div>
+            <span class="text-xs font-extrabold text-amber-400 uppercase tracking-wider">互動科學實驗室・光感差速與節能路徑比較</span>
+            <h3 class="text-xl sm:text-2xl font-black mt-0.5">虛實摩擦對比暨光感差速模擬器</h3>
+            <p class="text-xs text-slate-300 mt-1">切換比較「單元 13 二分法（左右大擺頭）」與「單元 14 四分法平滑微調（絲滑直線）」，並拖曳反射光強度滑桿觀察小車轉向與雙輪功率！</p>
+          </div>
+
+          <!-- Algorithm Mode Toggle -->
+          <div class="flex flex-wrap gap-2 bg-white/10 p-1.5 rounded-2xl flex-shrink-0">
+            <button onclick="setLineMode('two')" id="btn-mode-two" class="px-3.5 py-2 rounded-xl text-xs font-extrabold text-slate-300 hover:text-white transition cursor-pointer">
+              單元 13 二分法（大擺頭蛇行）
+            </button>
+            <button onclick="setLineMode('four')" id="btn-mode-four" class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-green-600 text-white shadow transition cursor-pointer">
+              單元 14 四分法平滑微調（省電直線）
+            </button>
+          </div>
+        </div>
+
+        <!-- Virtual vs Real Friction Banner -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+          <div class="bg-sky-500/15 border border-sky-400/40 rounded-2xl p-3.5 text-sky-100">
+            <strong class="text-sky-300 block mb-0.5">💻 Scratch 虛擬舞台（無摩擦力環境）：</strong>
+            螢幕座標沒有地板摩擦力（INd-Ⅱ-7），也沒有教室反光干擾，設定直行 100 步永遠 100% 筆直。
+          </div>
+          <div class="bg-amber-500/15 border border-amber-400/40 rounded-2xl p-3.5 text-amber-100">
+            <strong class="text-amber-300 block mb-0.5">🤖 LEGO 實體賽道（真實有摩擦力環境）：</strong>
+            輪胎在塑膠布底圖上會打滑與偏航，必須靠<strong>顏色感測器反射光（15%~98%）</strong>即時調整左右輪推力（INd-Ⅱ-6）拉回正軌！
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          
+          <!-- Left: Reflection Slider & SVG Dynamic Car Visualization -->
+          <div class="lg:col-span-7 space-y-4">
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-5 space-y-4">
+              <div class="flex justify-between items-center">
+                <span class="text-xs font-bold text-slate-300">拖動地面反射光強度（15% 黑線吸光 ～ 98% 白底反光）：</span>
+                <span class="text-2xl font-black text-amber-400"><span id="sci-reflect-val">58</span> %</span>
+              </div>
+
+              <!-- Gradient Track Bar -->
+              <div class="relative h-10 rounded-xl overflow-hidden border-2 border-slate-600" style="background: linear-gradient(90deg, #090d16 0%, #1e293b 28%, #64748b 52%, #f1f5f9 78%, #ffffff 100%);">
+                <div class="absolute top-0 bottom-0 w-1 bg-amber-400" style="left: 51.8%;" title="58% 黑白交界線"></div>
+                <div id="sci-sensor-dot" class="absolute top-1 bottom-1 w-8 -ml-4 rounded-full bg-rose-500/40 border-2 border-rose-400 flex items-center justify-center transition-all duration-75" style="left: 51.8%;">
+                  <div class="w-2.5 h-2.5 rounded-full bg-rose-500"></div>
+                </div>
+              </div>
+
+              <input type="range" id="sci-reflect-slider" min="15" max="98" value="58" oninput="updateScienceSim()" class="w-full accent-amber-400 cursor-pointer">
+              
+              <div class="flex justify-between text-[11px] font-bold text-slate-400">
+                <span>⬛ 全黑線區 (15%)</span>
+                <span>🎯 黑白交界 (58%)</span>
+                <span>⬜ 全白底區 (98%)</span>
+              </div>
+            </div>
+
+            <!-- Dynamic SVG Mini Car Attitude & Path Preview -->
+            <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-4 flex flex-col sm:flex-row items-center gap-4">
+              <svg viewBox="0 0 220 130" class="w-48 h-28 flex-shrink-0 bg-slate-900 rounded-xl border border-slate-700">
+                <!-- White Track & Black Boundary -->
+                <rect x="0" y="0" width="110" height="130" fill="#1e293b"/>
+                <rect x="110" y="0" width="110" height="130" fill="#f8fafc"/>
+                <line x1="110" y1="0" x2="110" y2="130" stroke="#f59e0b" stroke-width="2" stroke-dasharray="4,3"/>
+                
+                <!-- Dynamic Rotating Car Group -->
+                <g id="sci-car-svg" transform="translate(110, 65) rotate(0)">
+                  <rect x="-20" y="-28" width="40" height="56" rx="6" fill="#15803d" stroke="#fde047" stroke-width="2"/>
+                  <!-- Wheels -->
+                  <rect x="-26" y="-12" width="6" height="24" rx="2" fill="#38bdf8"/>
+                  <rect x="20" y="-12" width="6" height="24" rx="2" fill="#4ade80"/>
+                  <!-- Sensor Beam -->
+                  <circle cx="0" cy="-22" r="4" fill="#f43f5e"/>
+                  <path d="M0 -32 L-5 -25 L5 -25 Z" fill="#fde047"/>
+                </g>
+              </svg>
+
+              <div class="space-y-1.5 text-xs">
+                <div class="font-black text-sm text-white" id="sci-car-state">⬆️ 貼緊黑白交界線：穩定直線前進</div>
+                <p class="text-slate-300 leading-relaxed" id="sci-car-explain">
+                  反射光剛好在 58% 交界線，左右馬達推力相等，車身不晃動、路徑最筆直！
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Motor Power Gauges & Energy Consumption Assessment -->
+          <div class="lg:col-span-5 bg-white text-slate-900 rounded-2xl p-6 space-y-5 shadow-inner">
+            <div class="text-center border-b border-slate-200 pb-3">
+              <div class="text-xs font-extrabold text-slate-500 uppercase">雙驅動輪馬達功率即時輸出（INd-Ⅱ-6）</div>
+              <div id="sci-zone-tag" class="inline-block mt-1.5 px-3 py-1 rounded-full text-xs font-black bg-green-100 text-green-800">
+                區間判斷：黑白中心交界區
+              </div>
+            </div>
+
+            <!-- Left Motor A -->
+            <div>
+              <div class="flex justify-between text-xs font-extrabold mb-1">
+                <span>🔵 左驅動輪功率（馬達 A）</span>
+                <span class="text-sky-700 text-base font-black"><span id="sci-left-pwr">30</span> %</span>
+              </div>
+              <div class="w-full h-4 bg-slate-200 rounded-full overflow-hidden">
+                <div id="sci-left-bar" class="h-full bg-sky-600 transition-all duration-150" style="width: 75%;"></div>
+              </div>
+            </div>
+
+            <!-- Right Motor E -->
+            <div>
+              <div class="flex justify-between text-xs font-extrabold mb-1">
+                <span>🟢 右驅動輪功率（馬達 E）</span>
+                <span class="text-green-700 text-base font-black"><span id="sci-right-pwr">30</span> %</span>
+              </div>
+              <div class="w-full h-4 bg-slate-200 rounded-full overflow-hidden">
+                <div id="sci-right-bar" class="h-full bg-green-600 transition-all duration-150" style="width: 75%;"></div>
+              </div>
+            </div>
+
+            <!-- Energy Assessment Box -->
+            <div id="sci-energy-box" class="rounded-xl p-4 bg-green-50 border-2 border-green-500 space-y-1">
+              <div class="text-xs font-black text-green-900" id="sci-energy-title">⚡ 能源消耗評估：極佳（節能減碳最優解）</div>
+              <p class="text-xs text-green-800 leading-relaxed" id="sci-energy-desc">
+                四分法平滑微調以小幅差速（如 30% vs 22%）溫和修正車頭，減少蛇行里程與電池耗損，車上生鮮蔬果不撞傷！
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 分頁四：Scratch 設計（4 堂奠基課程＋6 大虛實轉換對照器）    -->
+    <!-- ========================================================= -->
+    <section id="tab-scratch" class="tab-panel space-y-8">
+      
+      <!-- Banner -->
+      <div class="bg-amber-50 border border-amber-300 rounded-3xl p-6 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-extrabold text-amber-800 uppercase tracking-wider">第一階段（第 1–4 節）Scratch 3.0 電腦模擬奠基・一課一學習重點</span>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">先在「俯視版樂高競賽底圖」舞台沙盤推演，再跨入實體挑戰</h2>
+          <p class="text-xs sm:text-sm text-slate-700 mt-1.5 leading-relaxed">
+            讓五年級零基礎學生在沒有「馬達插錯孔、輪胎打滑、日光燈反光」的純軟體環境下，先用中年級數學與生活經驗掌握四大核心程式積木。
+          </p>
+        </div>
+        <div class="bg-white border border-amber-300 px-5 py-3 rounded-2xl text-center flex-shrink-0 shadow-sm">
+          <div class="text-xs font-bold text-slate-500">前置奠基單元</div>
+          <div class="text-2xl font-black text-amber-600">第 1–4 節</div>
+        </div>
+      </div>
+
+      <!-- 4 Scratch Foundation Lesson Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Card 1 -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="bg-sky-100 text-sky-800 text-xs font-black px-3 py-1 rounded-full">貨車考照：最短路徑</span>
+            <span class="text-xs font-bold text-slate-400">銜接 LEGO 單元 07</span>
+          </div>
+          <h3 class="text-lg font-black text-slate-900">移動、右轉 90 度與重複 4 次走正方形</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            喚起三年級公分長度與四年級直角 90° 舊經驗，操控小貨車沿街道直線前進與轉彎，體會「繞遠路走正方形＝多走距離＝增加碳排」。
+          </p>
+          <div class="bg-slate-100 p-3.5 rounded-2xl space-y-1.5 text-xs font-mono">
+            <div class="scratch-hat px-3 py-1.5 font-bold w-fit">當 綠旗 被點擊</div>
+            <div class="scratch-control px-3 py-1.5 font-bold w-48">重複 4 次</div>
+            <div class="scratch-motion px-3 py-1.5 font-bold ml-4 w-40">移動 100 點</div>
+            <div class="scratch-motion px-3 py-1.5 font-bold ml-4 w-40">右轉 90 度</div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="bg-rose-100 text-rose-800 text-xs font-black px-3 py-1 rounded-full">自動煞停：遇到紅線停</span>
+            <span class="text-xs font-bold text-slate-400">銜接 LEGO 單元 13</span>
+          </div>
+          <h3 class="text-lg font-black text-slate-900">重複直到碰到紅色終點卸貨線</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            結合「紅燈停、綠燈行」生活交通規則，讓貨車自動往前開，直到感應終點紅色線條才自動煞停，不會撞進倉庫。
+          </p>
+          <div class="bg-slate-100 p-3.5 rounded-2xl space-y-1.5 text-xs font-mono">
+            <div class="scratch-hat px-3 py-1.5 font-bold w-fit">當 綠旗 被點擊</div>
+            <div class="scratch-control px-3 py-1.5 font-bold w-fit flex items-center gap-1">
+              重複直到 <span class="scratch-sensing px-2 py-0.5">碰到顏色 [紅色]?</span>
+            </div>
+            <div class="scratch-motion px-3 py-1.5 font-bold ml-4 w-40">移動 5 點</div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="bg-green-100 text-green-800 text-xs font-black px-3 py-1 rounded-full">產地分流：三色食材箱</span>
+            <span class="text-xs font-bold text-slate-400">銜接 LEGO 單元 18</span>
+          </div>
+          <h3 class="text-lg font-black text-slate-900">巢狀「如果...那麼...否則」與自訂「產地檢查」積木</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            運用中年級社會家鄉特產認知，建立自訂函式「產地檢查」：綠色（臺南青菜）送入左倉、紅色（進口牛排）送入右倉、黃色留中倉。
+          </p>
+          <div class="bg-slate-100 p-3.5 rounded-2xl space-y-1.5 text-xs font-mono">
+            <div class="scratch-myblock px-3 py-1.5 font-bold w-fit">定義 產地檢查</div>
+            <div class="scratch-control px-3 py-1.5 font-bold w-fit flex items-center gap-1">
+              如果 <span class="scratch-sensing px-2 py-0.5">碰到 [綠色]?</span> 那麼
+            </div>
+            <div class="scratch-motion px-3 py-1.5 font-bold ml-4 w-48">廣播訊息 [送往在地綠倉]</div>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="bg-purple-100 text-purple-800 text-xs font-black px-3 py-1 rounded-full">碳排儀表板：食物里程計算</span>
+            <span class="text-xs font-bold text-slate-400">銜接 LEGO 單元 19</span>
+          </div>
+          <h3 class="text-lg font-black text-slate-900">建立變數累加 0.2 / 1.5 / 8.0 碳排數值</h3>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            結合四年級一位小數加法，每收一箱綠菜 <code class="bg-slate-200 px-1 rounded">+0.2</code>、黃果 <code class="bg-slate-200 px-1 rounded">+1.5</code>、紅肉 <code class="bg-slate-200 px-1 rounded">+8.0</code>，親眼看見收 1 箱紅肉等於 40 箱綠菜的碳排！
+          </p>
+          <div class="bg-slate-100 p-3.5 rounded-2xl space-y-1.5 text-xs font-mono">
+            <div class="scratch-variable px-3 py-1.5 font-bold w-48">變數 [碳排總量] 設為 0</div>
+            <div class="scratch-variable px-3 py-1.5 font-bold w-56">變數 [碳排總量] 改變 (0.2)</div>
+            <div class="scratch-variable px-3 py-1.5 font-bold w-56">變數 [減碳積分] 改變 (150)</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Interactive Sim-to-Real Comparator (6 Core Concepts) -->
+      <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8 space-y-5">
+        <div>
+          <span class="text-xs font-extrabold text-green-700 uppercase tracking-wider">互動教學工具</span>
+          <h3 class="text-xl font-black text-slate-900 mt-0.5">Scratch 3.0 與 LEGO SPIKE Prime 虛實轉換互動對照器</h3>
+          <p class="text-xs sm:text-sm text-slate-600 mt-1">點擊下方六大核心概念卡片，檢視電腦積木寫法、實體機器人積木寫法與真實物理世界差異提醒：</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5" id="sr-cards">
+          <button onclick="showSimReal(0)" class="sr-card p-3 rounded-2xl text-xs font-black bg-green-700 text-white shadow cursor-pointer text-center">環境初始化</button>
+          <button onclick="showSimReal(1)" class="sr-card p-3 rounded-2xl text-xs font-black bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer text-center">移動距離</button>
+          <button onclick="showSimReal(2)" class="sr-card p-3 rounded-2xl text-xs font-black bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer text-center">轉向角度</button>
+          <button onclick="showSimReal(3)" class="sr-card p-3 rounded-2xl text-xs font-black bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer text-center">顏色偵測</button>
+          <button onclick="showSimReal(4)" class="sr-card p-3 rounded-2xl text-xs font-black bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer text-center">機構致動器</button>
+          <button onclick="showSimReal(5)" class="sr-card p-3 rounded-2xl text-xs font-black bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer text-center">迴圈與停止</button>
+        </div>
+
+        <div id="sr-detail-box" class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 分頁五：LEGO 機器人設計（藍圖熱點連動＋7大概念＋自我檢核）  -->
+    <!-- ========================================================= -->
+    <section id="tab-lego" class="tab-panel space-y-8">
+      
+      <!-- Top Interactive Blueprint + Student Self-Checklist -->
+      <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8 space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-4">
+          <div>
+            <span class="text-xs font-extrabold text-green-700 uppercase tracking-wider">硬體機構 × 感測光學 × 減碳演算法</span>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-900">AI 智慧低碳物流車・俯視工程藍圖與自我檢核</h2>
+          </div>
+          <button onclick="clearConceptHighlight()" id="btn-clear-hl" class="hidden px-3 py-1.5 rounded-xl bg-amber-400 text-green-950 text-xs font-black cursor-pointer shadow">
+            ✕ 取消零件高亮
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          
+          <!-- Custom SVG Top-Down Engineering Blueprint (Hotspots ① ~ ⑦) -->
+          <div class="lg:col-span-7 bg-slate-900 rounded-2xl p-4 text-white">
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-extrabold text-amber-400">👆 點擊藍圖上的 ①～⑦ 零件熱點，下方對應概念卡將自動高亮！</span>
+              <span class="text-[11px] bg-white/10 px-2.5 py-0.5 rounded-full text-slate-300">雙驅三感測配置</span>
+            </div>
+
+            <svg viewBox="0 0 580 350" class="w-full h-auto rounded-xl bg-slate-800/85 border border-slate-700">
+              <defs>
+                <pattern id="legoGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#334155" stroke-width="0.6"/>
+                </pattern>
+              </defs>
+              <rect width="580" height="350" fill="url(#legoGrid)" />
+
+              <!-- Forward Direction -->
+              <path d="M290 10 L302 24 L295 24 L295 36 L285 36 L285 24 L278 24 Z" fill="#4ade80"/>
+              <text x="310" y="24" fill="#4ade80" font-size="11" font-weight="bold">車頭前進方向 (Yaw = 0°)</text>
+
+              <!-- ② 八字形被動導流滑靴 & 抗扭斜撐 -->
+              <g class="svg-hotspot" onclick="highlightConcept('concept-2')">
+                <path d="M185 48 L225 94 L237 88 L200 40 Z" fill="#eab308" stroke="#fef08a" stroke-width="1.5"/>
+                <path d="M395 48 L355 94 L343 88 L380 40 Z" fill="#eab308" stroke="#fef08a" stroke-width="1.5"/>
+                <!-- Anti-twist truss -->
+                <line x1="226" y1="108" x2="216" y2="275" stroke="#fbbf24" stroke-width="3" stroke-dasharray="5,3"/>
+                <line x1="354" y1="108" x2="364" y2="275" stroke="#fbbf24" stroke-width="3" stroke-dasharray="5,3"/>
+                <rect x="12" y="40" width="164" height="44" rx="6" fill="#1e293b" stroke="#facc15" stroke-width="1.5"/>
+                <text x="20" y="57" fill="#fde047" font-size="10.5" font-weight="bold">② 八字導流滑靴＋抗扭斜撐</text>
+                <text x="20" y="73" fill="#cbd5e1" font-size="9">線對稱聚攏食材・防止車架變形</text>
+                <line x1="176" y1="62" x2="195" y2="62" stroke="#facc15" stroke-dasharray="3,2"/>
+              </g>
+
+              <!-- Food Block Sample -->
+              <rect x="274" y="52" width="32" height="22" rx="4" fill="#16a34a" stroke="#ffffff" stroke-width="1.5"/>
+              <text x="290" y="67" fill="#ffffff" font-size="9" font-weight="bold" text-anchor="middle">食材塊</text>
+
+              <!-- Main Chassis -->
+              <rect x="220" y="92" width="140" height="192" rx="12" fill="#0f172a" stroke="#38bdf8" stroke-width="2.5"/>
+
+              <!-- 3 Cargo Bays -->
+              <rect x="230" y="152" width="36" height="44" rx="4" fill="#064e3b" stroke="#10b981"/>
+              <text x="248" y="177" fill="#6ee7b7" font-size="8.5" font-weight="bold" text-anchor="middle">綠左倉</text>
+              <rect x="272" y="152" width="36" height="44" rx="4" fill="#78350f" stroke="#f59e0b"/>
+              <text x="290" y="177" fill="#fde68a" font-size="8.5" font-weight="bold" text-anchor="middle">黃中倉</text>
+              <rect x="314" y="152" width="36" height="44" rx="4" fill="#7f1d1d" stroke="#ef4444"/>
+              <text x="332" y="177" fill="#fca5a5" font-size="8.5" font-weight="bold" text-anchor="middle">紅右倉</text>
+
+              <!-- ④ 雙顏色感測器 F & D -->
+              <g class="svg-hotspot" onclick="highlightConcept('concept-4')">
+                <rect x="228" y="100" width="22" height="22" rx="4" fill="#ec4899" stroke="#fbcfe8" stroke-width="1.5"/>
+                <rect x="12" y="96" width="176" height="44" rx="6" fill="#1e293b" stroke="#ec4899" stroke-width="1.5"/>
+                <text x="20" y="113" fill="#f472b6" font-size="10.5" font-weight="bold">④ 車頭水平顏色感測器 F</text>
+                <text x="20" y="129" fill="#cbd5e1" font-size="9">產地掃描眼（最佳視距 1cm）</text>
+                <line x1="188" y1="114" x2="226" y2="111" stroke="#f472b6" stroke-dasharray="3,2"/>
+
+                <rect x="330" y="100" width="22" height="22" rx="4" fill="#a855f7" stroke="#e9d5ff" stroke-width="1.5"/>
+                <rect x="392" y="92" width="176" height="44" rx="6" fill="#1e293b" stroke="#a855f7" stroke-width="1.5"/>
+                <text x="400" y="109" fill="#c084fc" font-size="10.5" font-weight="bold">④ 車底朝下顏色感測器 D</text>
+                <text x="400" y="125" fill="#cbd5e1" font-size="9">邊界煞車眼（黑吸光白反光）</text>
+                <line x1="354" y1="111" x2="392" y2="111" stroke="#c084fc" stroke-dasharray="3,2"/>
+              </g>
+
+              <!-- ③ 分流馬達 C (225° / 275° / 325°) -->
+              <g class="svg-hotspot" onclick="highlightConcept('concept-3')">
+                <rect x="274" y="120" width="32" height="24" rx="4" fill="#ea580c" stroke="#fed7aa" stroke-width="1.5"/>
+                <line x1="290" y1="120" x2="265" y2="94" stroke="#fb923c" stroke-width="4" stroke-linecap="round"/>
+                <rect x="392" y="144" width="176" height="48" rx="6" fill="#1e293b" stroke="#f97316" stroke-width="1.5"/>
+                <text x="400" y="161" fill="#fb923c" font-size="10.5" font-weight="bold">③ 偏擺分檢馬達 C</text>
+                <text x="400" y="177" fill="#fde047" font-size="9">225°綠左 / 275°黃中 / 325°紅右</text>
+                <line x1="308" y1="136" x2="392" y2="165" stroke="#fb923c" stroke-dasharray="3,2"/>
+              </g>
+
+              <!-- ⑤ 主機與內建三軸陀螺儀 -->
+              <g class="svg-hotspot" onclick="highlightConcept('concept-5')">
+                <rect x="242" y="204" width="96" height="68" rx="8" fill="#f8fafc" stroke="#94a3b8" stroke-width="2"/>
+                <text x="290" y="232" fill="#0f172a" font-size="9.5" font-weight="bold" text-anchor="middle">SPIKE 主機</text>
+                <text x="290" y="246" fill="#15803d" font-size="8.5" font-weight="bold" text-anchor="middle">內建三軸陀螺儀</text>
+                <rect x="392" y="204" width="176" height="44" rx="6" fill="#1e293b" stroke="#10b981" stroke-width="1.5"/>
+                <text x="400" y="221" fill="#34d399" font-size="10.5" font-weight="bold">⑤ 內建三軸陀螺儀 (Yaw)</text>
+                <text x="400" y="237" fill="#cbd5e1" font-size="9">偵測偏航角・克服打滑誤差</text>
+                <line x1="338" y1="226" x2="392" y2="226" stroke="#34d399" stroke-dasharray="3,2"/>
+              </g>
+
+              <!-- ① 雙輪差速底盤 (Motor A & E) -->
+              <g class="svg-hotspot" onclick="highlightConcept('concept-1')">
+                <rect x="190" y="200" width="26" height="66" rx="4" fill="#0284c7" stroke="#bae6fd" stroke-width="1.5"/>
+                <rect x="174" y="207" width="14" height="52" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                <rect x="364" y="200" width="26" height="66" rx="4" fill="#0284c7" stroke="#bae6fd" stroke-width="1.5"/>
+                <rect x="392" y="207" width="14" height="52" rx="3" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                <rect x="12" y="204" width="154" height="48" rx="6" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="20" y="221" fill="#7dd3fc" font-size="10.5" font-weight="bold">① 雙輪差速底盤 (A & E)</text>
+                <text x="20" y="237" fill="#cbd5e1" font-size="9">左右獨立馬達＋後方萬向輪</text>
+                <line x1="166" y1="228" x2="174" y2="228" stroke="#38bdf8"/>
+              </g>
+
+              <!-- ⑥ & ⑦ Algorithm Hotspots -->
+              <g class="svg-hotspot" onclick="highlightConcept('concept-6')">
+                <rect x="12" y="290" width="270" height="44" rx="6" fill="#064e3b" stroke="#10b981" stroke-width="1.5"/>
+                <text x="22" y="307" fill="#6ee7b7" font-size="10" font-weight="bold">⑥ 比例式航向校正 (YAW-sub 半成品範本)</text>
+                <text x="22" y="323" fill="#d1fae5" font-size="8.5">自動抵消偏航・走幾何最短直線最省電</text>
+              </g>
+              <g class="svg-hotspot" onclick="highlightConcept('concept-7')">
+                <rect x="298" y="290" width="270" height="44" rx="6" fill="#1e3a8a" stroke="#60a5fa" stroke-width="1.5"/>
+                <text x="308" y="307" fill="#93c5fd" font-size="10" font-weight="bold">⑦ 閉環條件煞停＋模組化副程式</text>
+                <text x="308" y="323" fill="#dbeafe" font-size="8.5">Color Check 分流 ＋ Put Block 卸貨</text>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Right: Interactive Student Checklist & 4-Grid Debugging Tips -->
+          <div class="lg:col-span-5 space-y-4">
+            <div class="bg-amber-50 border-2 border-amber-400 rounded-2xl p-5 space-y-3">
+              <div class="flex items-center justify-between">
+                <h3 class="text-base font-black text-amber-950">🛡️ 出車前四大工程黃金法則自我檢核表</h3>
+                <span id="checklist-badge" class="text-xs font-black bg-white text-amber-800 border border-amber-300 px-2.5 py-0.5 rounded-full">
+                  已檢核 0 / 4 項
+                </span>
+              </div>
+
+              <div class="space-y-2 text-xs">
+                <label class="flex items-start gap-2.5 bg-white p-3 rounded-xl border border-amber-200 cursor-pointer hover:bg-amber-100/40">
+                  <input type="checkbox" onchange="updateGoldenChecklist()" class="golden-cb accent-green-700 w-4 h-4 mt-0.5">
+                  <span><strong>機構順暢法則：</strong>手動撥動上方分流撥桿 C，確認左右擺動（225°~325°）完全不會卡到積木或電線。</span>
+                </label>
+                <label class="flex items-start gap-2.5 bg-white p-3 rounded-xl border border-amber-200 cursor-pointer hover:bg-amber-100/40">
+                  <input type="checkbox" onchange="updateGoldenChecklist()" class="golden-cb accent-green-700 w-4 h-4 mt-0.5">
+                  <span><strong>黃金視距法則：</strong>車頭顏色感測器 F 距離積木約「一根手指寬（1 公分）」，車底感測器 D 離地約 0.8 公分。</span>
+                </label>
+                <label class="flex items-start gap-2.5 bg-white p-3 rounded-xl border border-amber-200 cursor-pointer hover:bg-amber-100/40">
+                  <input type="checkbox" onchange="updateGoldenChecklist()" class="golden-cb accent-green-700 w-4 h-4 mt-0.5">
+                  <span><strong>對稱平衡法則：</strong>左右兩顆驅動輪（A、E）緊密扣入輪軸、八字導流翼對稱安裝，確保兩邊摩擦力一致。</span>
+                </label>
+                <label class="flex items-start gap-2.5 bg-white p-3 rounded-xl border border-amber-200 cursor-pointer hover:bg-amber-100/40">
+                  <input type="checkbox" onchange="updateGoldenChecklist()" class="golden-cb accent-green-700 w-4 h-4 mt-0.5">
+                  <span><strong>歸零出發法則：</strong>按下啟動鍵前，先確認分流撥桿 C 回到正中央（275°），且主機水平擺正（Yaw = 0）。</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- 4-Grid Common Debugging Tips -->
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-2.5">
+              <h3 class="text-xs font-black text-slate-900">🔧 四格常見排錯提示（五年級小小修車師自我排查）</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                <div class="bg-white p-3 rounded-xl border border-rose-200">
+                  <strong class="text-rose-700 block mb-0.5">❓ 一啟動就原地打轉？</strong>
+                  <span class="text-slate-600">檢查左馬達 A 與右馬達 E 是否接反，或馬達設定方向設錯了！</span>
+                </div>
+                <div class="bg-white p-3 rounded-xl border border-amber-200">
+                  <strong class="text-amber-800 block mb-0.5">❓ 綠色誤判成藍色？</strong>
+                  <span class="text-slate-600">日光燈反光太強，將顏感 F 往前推近積木保持 1 公分最佳視距。</span>
+                </div>
+                <div class="bg-white p-3 rounded-xl border border-sky-200">
+                  <strong class="text-sky-800 block mb-0.5">❓ 撥桿轉動時卡住？</strong>
+                  <span class="text-slate-600">確認八字導流翼通道寬度足夠，未夾住食材積木。</span>
+                </div>
+                <div class="bg-white p-3 rounded-xl border border-purple-200">
+                  <strong class="text-purple-800 block mb-0.5">❓ 終點黑線沒煞車？</strong>
+                  <span class="text-slate-600">確認車底顏感 D 離地約 0.8 公分，且迴圈後方已接上 stop moving。</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Three Dimensions & 7 Design Concept Cards -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+        
+        <!-- Dimension 1: 硬體機構設計 -->
+        <div class="space-y-4">
+          <div class="bg-sky-800 text-white rounded-2xl px-5 py-3.5 shadow-sm">
+            <div class="text-[11px] font-bold text-sky-200 uppercase">硬體機構工程維度</div>
+            <h3 class="text-base font-black">硬體機構設計（概念 ①–③）</h3>
+          </div>
+
+          <article id="concept-1" class="concept-card bg-white rounded-2xl shadow-sm border-2 border-slate-200 p-5 space-y-2">
+            <span class="bg-sky-100 text-sky-800 text-xs font-black px-2.5 py-0.5 rounded-full">概念 ①・物理力學與工程學</span>
+            <h4 class="text-base font-black text-slate-900">雙輪差速底盤（馬達 A & E＋萬向輪）</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">左右獨立動力輪搭配後方萬向支撐輪，透過兩輪推力轉速差實現直行與微幅轉向，並維持低重心穩定抓地。</p>
+          </article>
+
+          <article id="concept-2" class="concept-card bg-white rounded-2xl shadow-sm border-2 border-slate-200 p-5 space-y-2">
+            <span class="bg-sky-100 text-sky-800 text-xs font-black px-2.5 py-0.5 rounded-full">概念 ②・幾何對稱與結構力學</span>
+            <h4 class="text-base font-black text-slate-900">八字形被動導流滑靴與抗扭斜撐</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">車頭對稱八字開口利用幾何形狀自然將食材匯聚入通道、底部平滑減摩；車側三角形抗扭斜撐防止推貨時車架變形。</p>
+          </article>
+
+          <article id="concept-3" class="concept-card bg-white rounded-2xl shadow-sm border-2 border-slate-200 p-5 space-y-2">
+            <span class="bg-sky-100 text-sky-800 text-xs font-black px-2.5 py-0.5 rounded-full">概念 ③・幾何角度與機械傳動</span>
+            <h4 class="text-base font-black text-slate-900">偏擺分檢機構（馬達 C 三段角度定位）</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">頂置馬達 C 帶動撥桿精準定位：<strong>225°</strong>（在地綠左倉）、<strong>275°</strong>（國內黃中倉）、<strong>325°</strong>（進口紅右倉），並設物理限位防卡死。</p>
+          </article>
+        </div>
+
+        <!-- Dimension 2: 感測器與物理 -->
+        <div class="space-y-4">
+          <div class="bg-amber-600 text-white rounded-2xl px-5 py-3.5 shadow-sm">
+            <div class="text-[11px] font-bold text-amber-100 uppercase">感測光學與慣性物理維度</div>
+            <h3 class="text-base font-black">感測器與物理（概念 ④–⑤）</h3>
+          </div>
+
+          <article id="concept-4" class="concept-card bg-white rounded-2xl shadow-sm border-2 border-slate-200 p-5 space-y-2">
+            <span class="bg-amber-100 text-amber-900 text-xs font-black px-2.5 py-0.5 rounded-full">概念 ④・幾何光學與色光原理</span>
+            <h4 class="text-base font-black text-slate-900">車頭水平顏感 F 與車底朝下顏感 D（最佳視距 1cm）</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">水平顏感 F（產地掃描眼）辨識三色食材；車底顏感 D（邊界煞車眼）偵測黑線。維持約 1 公分最佳視距避免反光誤判。</p>
+          </article>
+
+          <article id="concept-5" class="concept-card bg-white rounded-2xl shadow-sm border-2 border-slate-200 p-5 space-y-2">
+            <span class="bg-amber-100 text-amber-900 text-xs font-black px-2.5 py-0.5 rounded-full">概念 ⑤・慣性物理與座標幾何</span>
+            <h4 class="text-base font-black text-slate-900">主機內建三軸陀螺儀（Yaw Angle 偏航感測）</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">即時偵測車身偏航角度（左偏為負、右偏為正），取代單純算輪胎圈數的盲開，克服教室地板打滑造成的累積誤差。</p>
+          </article>
+        </div>
+
+        <!-- Dimension 3: 演算法與減碳控制 -->
+        <div class="space-y-4">
+          <div class="bg-green-700 text-white rounded-2xl px-5 py-3.5 shadow-sm">
+            <div class="text-[11px] font-bold text-green-200 uppercase">運算思維與綠色物流控制維度</div>
+            <h3 class="text-base font-black">演算法與減碳控制（概念 ⑥–⑦）</h3>
+          </div>
+
+          <article id="concept-6" class="concept-card bg-white rounded-2xl shadow-sm border-2 border-slate-200 p-5 space-y-2">
+            <span class="bg-green-100 text-green-800 text-xs font-black px-2.5 py-0.5 rounded-full">概念 ⑥・比例控制與節能永續</span>
+            <h4 class="text-base font-black text-slate-900">比例式航向校正（YAW-sub 半成品範本）</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">教師封裝複雜數學公式於 <code class="bg-slate-100 px-1 rounded">YAW-sub</code> 積木包，學生微調速度與修正力道即可讓貨車走幾何最短直線、最省電減碳。</p>
+          </article>
+
+          <article id="concept-7" class="concept-card bg-white rounded-2xl shadow-sm border-2 border-slate-200 p-5 space-y-2">
+            <span class="bg-green-100 text-green-800 text-xs font-black px-2.5 py-0.5 rounded-full">概念 ⑦・閉環回饋與模組化程式</span>
+            <h4 class="text-base font-black text-slate-900">閉環條件煞停與模組化副程式（Color Check / Put Block）</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">以 <code class="bg-slate-100 px-1 rounded">repeat until</code> 偵測黑線緊接 <code class="bg-slate-100 px-1 rounded">stop moving</code> 主動煞車，並將分流與卸貨封裝為獨立功能積木包。</p>
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 分頁六：比賽規則（90秒單線直送賽＋SVG場地＋雙軌計分模擬器） -->
+    <!-- ========================================================= -->
+    <section id="tab-comp" class="tab-panel space-y-8">
+      
+      <!-- Top Row: SVG Arena Map + 10yo Friendly Rules -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- SVG Competition Arena Map -->
+        <div class="lg:col-span-7 bg-white rounded-3xl shadow-sm border border-slate-200 p-6 space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <h2 class="text-lg sm:text-xl font-black text-slate-900">《府城低碳物流爭霸戰》2.4m × 1.2m 場地配置圖</h2>
+            <span class="bg-green-100 text-green-800 text-xs font-black px-3 py-1 rounded-full">限時 90 秒・單線直送 4 顆食材</span>
+          </div>
+
+          <svg viewBox="0 0 600 320" class="w-full h-auto rounded-2xl border-4 border-slate-900 bg-white">
+            <!-- Left Side: Three Color Collection End Zones -->
+            <!-- Green Zone -->
+            <rect x="0" y="0" width="124" height="106" fill="#15803d"/>
+            <text x="62" y="42" fill="#ffffff" font-size="13" font-weight="900" text-anchor="middle">在地食材終點區</text>
+            <text x="62" y="60" fill="#dcfce7" font-size="10" font-weight="bold" text-anchor="middle">(臺南旬味首選)</text>
+            <rect x="20" y="70" width="84" height="22" rx="4" fill="#14532d"/>
+            <text x="62" y="85" fill="#4ade80" font-size="11" font-weight="900" text-anchor="middle">+150 分/顆</text>
+
+            <!-- Red Zone -->
+            <rect x="0" y="106" width="124" height="108" fill="#dc2626"/>
+            <text x="62" y="148" fill="#ffffff" font-size="13" font-weight="900" text-anchor="middle">進口食材終點區</text>
+            <text x="62" y="166" fill="#fee2e2" font-size="10" font-weight="bold" text-anchor="middle">(長途高碳排)</text>
+            <rect x="20" y="176" width="84" height="22" rx="4" fill="#7f1d1d"/>
+            <text x="62" y="191" fill="#fca5a5" font-size="11" font-weight="900" text-anchor="middle">+50 分/顆</text>
+
+            <!-- Yellow Zone -->
+            <rect x="0" y="214" width="124" height="106" fill="#eab308"/>
+            <text x="62" y="256" fill="#1e293b" font-size="13" font-weight="900" text-anchor="middle">國內食材終點區</text>
+            <text x="62" y="274" fill="#422006" font-size="10" font-weight="bold" text-anchor="middle">(跨縣中程運送)</text>
+            <rect x="20" y="284" width="84" height="22" rx="4" fill="#713f12"/>
+            <text x="62" y="299" fill="#fef08a" font-size="11" font-weight="900" text-anchor="middle">+100 分/顆</text>
+
+            <!-- Finish Black Line -->
+            <line x1="124" y1="0" x2="124" y2="320" stroke="#0f172a" stroke-width="6"/>
+            <text x="136" y="22" fill="#0f172a" font-size="10" font-weight="900">◀ 終點煞車黑線</text>
+
+            <!-- Lane Divider Black Lines -->
+            <line x1="124" y1="106" x2="496" y2="106" stroke="#0f172a" stroke-width="5"/>
+            <line x1="124" y1="214" x2="496" y2="214" stroke="#0f172a" stroke-width="5"/>
+
+            <!-- Right Side: Departure Zone -->
+            <rect x="496" y="106" width="104" height="108" fill="#f8fafc" stroke="#0f172a" stroke-width="6"/>
+            <text x="548" y="148" fill="#0f172a" font-size="14" font-weight="900" text-anchor="middle">理貨</text>
+            <text x="548" y="168" fill="#0f172a" font-size="14" font-weight="900" text-anchor="middle">出發區</text>
+            <text x="548" y="188" fill="#64748b" font-size="10" font-weight="bold" text-anchor="middle">(正投影不壓線)</text>
+
+            <!-- Single-Lane Main Track Highlight -->
+            <rect x="128" y="110" width="364" height="100" fill="#f0fdf4" opacity="0.7"/>
+            <path d="M482 160 L146 160" stroke="#15803d" stroke-width="2.5" stroke-dasharray="6,4"/>
+            <polygon points="146,155 135,160 146,165" fill="#15803d"/>
+
+            <!-- 4 Random Food Placement Spots -->
+            <rect x="424" y="149" width="22" height="22" rx="4" fill="#15803d" stroke="#0f172a" stroke-width="1.5"/>
+            <text x="435" y="141" fill="#15803d" font-size="9.5" font-weight="bold" text-anchor="middle">點位① 綠</text>
+
+            <rect x="340" y="149" width="22" height="22" rx="4" fill="#eab308" stroke="#0f172a" stroke-width="1.5"/>
+            <text x="351" y="141" fill="#b45309" font-size="9.5" font-weight="bold" text-anchor="middle">點位② 黃</text>
+
+            <rect x="256" y="149" width="22" height="22" rx="4" fill="#15803d" stroke="#0f172a" stroke-width="1.5"/>
+            <text x="267" y="141" fill="#15803d" font-size="9.5" font-weight="bold" text-anchor="middle">點位③ 綠</text>
+
+            <rect x="172" y="149" width="22" height="22" rx="4" fill="#dc2626" stroke="#0f172a" stroke-width="1.5"/>
+            <text x="183" y="141" fill="#b91c1c" font-size="9.5" font-weight="bold" text-anchor="middle">點位④ 紅</text>
+
+            <text x="310" y="58" fill="#94a3b8" font-size="11" font-weight="bold" text-anchor="middle">（備用產地道路 A — 進階挑戰賽道）</text>
+            <text x="310" y="272" fill="#94a3b8" font-size="11" font-weight="bold" text-anchor="middle">（備用產地道路 B — 進階挑戰賽道）</text>
+            <text x="310" y="198" fill="#15803d" font-size="10" font-weight="bold" text-anchor="middle">▲ 五年級單線直送主賽道（隨機擺放 4 顆食材積木）</text>
+          </svg>
+        </div>
+
+        <!-- 10yo Friendly Competition Rules -->
+        <div class="lg:col-span-5 bg-white rounded-3xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-3">
+            <h3 class="text-lg font-black text-slate-900 flex items-center gap-2">
+              <span class="w-2.5 h-5 bg-amber-400 rounded-full"></span>
+              單線精準產地直送賽制規則
+            </h3>
+            <ul class="space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <li class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <strong class="text-green-800 block">自主巡航（限時 90 秒）：</strong>
+                從右側理貨出發區直線前進，收集主賽道上隨機擺放的 <strong>4 顆食材積木</strong>，車內自動左右分流並送達左側綠／紅／黃集散終點區。
+              </li>
+              <li class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <strong class="text-green-800 block">友善救援機制（不扣分）：</strong>
+                比賽中若車子卡住或偏離，隨時舉手喊「救援」即可拿回出發區重新啟動（<strong>不扣分、僅持續計時</strong>），鼓勵 10 歲孩子大膽嘗試！
+              </li>
+              <li class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <strong class="text-green-800 block">分區卸貨計分：</strong>
+                完全送進同色集散區得全額分（<strong>綠 +150 / 黃 +100 / 紅 +50</strong>），壓線得一半分數。
+              </li>
+            </ul>
+          </div>
+
+          <div class="bg-amber-50 border border-amber-300 rounded-2xl p-3.5 text-xs text-amber-950 font-bold">
+            ⏱️ 直線節能獎勵：送達 2 顆（含）以上有效食材並提前喊停者，<strong>剩餘秒數 × 2 分</strong>直接加總！
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Dual-Track Score & Carbon Footprint Simulator -->
+      <div class="bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-900 text-white rounded-3xl shadow-xl p-6 sm:p-8 space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-700 pb-4">
+          <div>
+            <span class="text-xs font-extrabold text-amber-400 uppercase tracking-wider">競賽大螢幕即時模擬器・雙軌計分系統</span>
+            <h3 class="text-xl sm:text-2xl font-black mt-0.5">雙軌計分與碳足跡即時模擬器</h3>
+            <p class="text-xs text-slate-300 mt-1">調整送達各區的三色食材數量與剩餘秒數，同步檢視「物流任務總分」、「累計碳排量（kg CO₂e）」與動態獎項稱號！</p>
+          </div>
+          <button onclick="resetCompSim()" class="self-start sm:self-auto px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-extrabold transition cursor-pointer">
+            ↺ 重置標準成績 (2綠1黃0紅)
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <!-- Left Controls -->
+          <div class="lg:col-span-7 space-y-4">
+            
+            <!-- Green Ingredient Counter -->
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center justify-between gap-4">
+              <div>
+                <div class="font-black text-base text-green-400">🟢 綠色在地食材（送達綠區）</div>
+                <div class="text-xs text-slate-300 mt-0.5">+150 分 / 顆 ｜ 碳排僅 +0.2 kg CO₂e</div>
+              </div>
+              <div class="flex items-center gap-3">
+                <button onclick="updateCompCount('green', -1)" class="w-10 h-10 rounded-xl bg-slate-700 hover:bg-slate-600 font-black text-lg cursor-pointer">-</button>
+                <span id="comp-green-num" class="w-8 text-center font-black text-2xl">2</span>
+                <button onclick="updateCompCount('green', 1)" class="w-10 h-10 rounded-xl bg-green-600 hover:bg-green-500 font-black text-lg cursor-pointer">+</button>
+              </div>
+            </div>
+
+            <!-- Yellow Ingredient Counter -->
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center justify-between gap-4">
+              <div>
+                <div class="font-black text-base text-amber-300">🟡 黃色國內食材（送達黃區）</div>
+                <div class="text-xs text-slate-300 mt-0.5">+100 分 / 顆 ｜ 碳排 +1.5 kg CO₂e</div>
+              </div>
+              <div class="flex items-center gap-3">
+                <button onclick="updateCompCount('yellow', -1)" class="w-10 h-10 rounded-xl bg-slate-700 hover:bg-slate-600 font-black text-lg cursor-pointer">-</button>
+                <span id="comp-yellow-num" class="w-8 text-center font-black text-2xl">1</span>
+                <button onclick="updateCompCount('yellow', 1)" class="w-10 h-10 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-black text-lg cursor-pointer">+</button>
+              </div>
+            </div>
+
+            <!-- Red Ingredient Counter -->
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-4 flex items-center justify-between gap-4">
+              <div>
+                <div class="font-black text-base text-rose-400">🔴 紅色進口食材（送達紅區）</div>
+                <div class="text-xs text-slate-300 mt-0.5">+50 分 / 顆 ｜ 高碳排 +8.0 kg CO₂e</div>
+              </div>
+              <div class="flex items-center gap-3">
+                <button onclick="updateCompCount('red', -1)" class="w-10 h-10 rounded-xl bg-slate-700 hover:bg-slate-600 font-black text-lg cursor-pointer">-</button>
+                <span id="comp-red-num" class="w-8 text-center font-black text-2xl">0</span>
+                <button onclick="updateCompCount('red', 1)" class="w-10 h-10 rounded-xl bg-rose-600 hover:bg-rose-500 font-black text-lg cursor-pointer">+</button>
+              </div>
+            </div>
+
+            <!-- Remaining Seconds Slider -->
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-4 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-extrabold text-sm text-sky-300">⏱️ 提前完成剩餘秒數（每 1 秒 +2 分）</span>
+                <span class="font-black text-xl text-sky-400"><span id="comp-sec-num">20</span> 秒</span>
+              </div>
+              <input type="range" id="comp-sec-slider" min="0" max="75" value="20" oninput="renderCompResult()" class="w-full accent-sky-400 cursor-pointer">
+              <p id="comp-sec-hint" class="text-xs text-emerald-300 font-bold">✅ 已送達 2 顆以上有效食材，啟動剩餘秒數加分！</p>
+            </div>
+
+          </div>
+
+          <!-- Right Dual-Track Output Dashboard -->
+          <div class="lg:col-span-5 bg-white text-slate-900 rounded-3xl p-6 space-y-5 shadow-inner">
+            <div class="text-center border-b border-slate-200 pb-4">
+              <div class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">軌道一：物流任務總分</div>
+              <div class="text-5xl font-black text-green-700 mt-1"><span id="comp-total-score">440</span> <span class="text-lg font-bold text-slate-500">分</span></div>
+            </div>
+
+            <div class="text-center border-b border-slate-200 pb-4">
+              <div class="text-xs font-extrabold text-slate-500 uppercase tracking-wider">軌道二：本趟累計碳排放量</div>
+              <div class="text-4xl font-black text-slate-800 mt-1"><span id="comp-total-carbon">1.9</span> <span class="text-base font-bold text-slate-500">kg CO₂e</span></div>
+              <div class="mt-2 inline-block bg-green-50 border border-green-200 px-3 py-1 rounded-full text-xs font-bold text-green-900">
+                相當於 <span id="comp-veggie-equiv" class="text-green-700 font-black text-sm">10</span> 顆臺南在地青菜的碳排！
+              </div>
+            </div>
+
+            <!-- Dynamic Award Title Box -->
+            <div id="comp-award-box" class="rounded-2xl p-4 bg-green-50 border-2 border-green-500 space-y-1 transition-all">
+              <div class="text-xs font-extrabold text-green-700 uppercase">🏅 動態稱號頒獎評估</div>
+              <div class="text-base font-black text-green-900" id="comp-award-title">🏆 低碳守護神大獎（綠能最高榮譽）</div>
+              <p class="text-xs text-green-800 leading-relaxed" id="comp-award-desc">
+                兼顧高任務積分與極低碳排放！優先配送在地旬味並走筆直最短路徑，展現最佳綠色物流工程力！
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 分頁七：倡議活動（實習工程師結業省思＋臺南低碳一餐承諾卡）  -->
+    <!-- ========================================================= -->
+    <section id="tab-advocacy" class="tab-panel space-y-8">
+      
+      <!-- Three Reflection Questions -->
+      <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8 space-y-5">
+        <div>
+          <span class="text-xs font-extrabold text-green-700 uppercase tracking-wider">從綠能物流工程師回到日常消費者視角</span>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">實習工程師結業省思：三道日常餐桌減碳提問</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div class="bg-amber-50/70 border border-amber-200 rounded-2xl p-5 space-y-2">
+            <span class="bg-amber-400 text-green-950 text-xs font-black px-2.5 py-0.5 rounded-full">省思提問一</span>
+            <h3 class="font-black text-slate-900 text-base">為什麼多一箱紅肉碳排就暴增？</h3>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+              「在模擬器裡只要多搬一顆紅色進口牛排，總碳排就立刻增加 8.0 kg CO₂e（等於 40 顆在地青菜）。這提醒我們在選購三餐時，產地距離與冷鏈耗能帶來多大的影響？」
+            </p>
+          </div>
+
+          <div class="bg-emerald-50/70 border border-emerald-200 rounded-2xl p-5 space-y-2">
+            <span class="bg-green-700 text-white text-xs font-black px-2.5 py-0.5 rounded-full">省思提問二</span>
+            <h3 class="font-black text-slate-900 text-base">如何讓每天吃的食物走「最短路線」？</h3>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+              「我們花了好多堂課調校陀螺儀才幫樂高貨車省下一點點電力；在日常生活中，我們只要做哪一個簡單的選擇，就能讓食物從產地到餐桌走最短距離？」
+            </p>
+          </div>
+
+          <div class="bg-sky-50/70 border border-sky-200 rounded-2xl p-5 space-y-2">
+            <span class="bg-sky-700 text-white text-xs font-black px-2.5 py-0.5 rounded-full">省思提問三</span>
+            <h3 class="font-black text-slate-900 text-base">明天營養午餐與週末買菜的行動</h3>
+            <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">
+              「明天中午在學校吃營養午餐，或週末跟爸媽去臺南傳統市場、超市買菜時，你打算如何介紹『三章一Q』與在地當季食材給家人？」
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive Pledge Card Generator: 我的臺南低碳一餐承諾卡生成器 -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left Input Controls -->
+        <div class="lg:col-span-6 bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8 space-y-5">
+          <div>
+            <span class="text-xs font-extrabold text-green-700 uppercase tracking-wider">互動行動倡議工具</span>
+            <h3 class="text-xl font-black text-slate-900 mt-0.5">🍱 我的臺南低碳一餐承諾卡生成器</h3>
+            <p class="text-xs sm:text-sm text-slate-600 mt-1">輸入你的班級姓名，勾選喜愛的臺南在地食材與減碳行動承諾，即時製作專屬「府城低碳小尖兵承諾卡」！</p>
+          </div>
+
+          <div>
+            <label class="block text-xs font-extrabold text-slate-700 mb-1.5">小尖兵班級與姓名</label>
+            <input type="text" id="pledge-student-name" value="五年甲班 綠能小尖兵" oninput="updatePledgeCard()" placeholder="請輸入班級與姓名" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-bold focus:outline-none focus:border-green-700">
+          </div>
+
+          <div>
+            <label class="block text-xs font-extrabold text-slate-700 mb-2">選擇臺南在地當季食材（可複選）</label>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-bold" id="pledge-food-checks">
+              <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-green-50 cursor-pointer">
+                <input type="checkbox" value="🐚 七股文蛤湯" checked onchange="updatePledgeCard()" class="accent-green-700 w-4 h-4">
+                <span>🐚 七股文蛤湯</span>
+              </label>
+              <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-green-50 cursor-pointer">
+                <input type="checkbox" value="🐟 學甲虱目魚肚" checked onchange="updatePledgeCard()" class="accent-green-700 w-4 h-4">
+                <span>🐟 學甲虱目魚肚</span>
+              </label>
+              <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-green-50 cursor-pointer">
+                <input type="checkbox" value="🌰 官田菱角" checked onchange="updatePledgeCard()" class="accent-green-700 w-4 h-4">
+                <span>🌰 官田菱角</span>
+              </label>
+              <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-green-50 cursor-pointer">
+                <input type="checkbox" value="🍊 麻豆文旦" onchange="updatePledgeCard()" class="accent-green-700 w-4 h-4">
+                <span>🍊 麻豆文旦</span>
+              </label>
+              <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-green-50 cursor-pointer sm:col-span-2">
+                <input type="checkbox" value="🥬 在地有機青江菜" checked onchange="updatePledgeCard()" class="accent-green-700 w-4 h-4">
+                <span>🥬 在地有機青江菜</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-extrabold text-slate-700 mb-2">選擇日常減碳行動承諾（可複選）</label>
+            <div class="space-y-2 text-xs font-bold" id="pledge-action-checks">
+              <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-amber-50 cursor-pointer">
+                <input type="checkbox" value="🥢 自備環保餐具與水壺，減少一次性垃圾" checked onchange="updatePledgeCard()" class="accent-amber-600 w-4 h-4">
+                <span>🥢 自備環保餐具，減少一次性垃圾</span>
+              </label>
+              <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-amber-50 cursor-pointer">
+                <input type="checkbox" value="🍚 營養午餐與家庭晚餐吃光光不剩食" checked onchange="updatePledgeCard()" class="accent-amber-600 w-4 h-4">
+                <span>🍚 不剩食，珍惜農民與大自然的食物資源</span>
+              </label>
+              <label class="flex items-center gap-2 p-2.5 rounded-xl border border-slate-200 hover:bg-amber-50 cursor-pointer">
+                <input type="checkbox" value="🏷️ 優先選購「三章一Q」臺南在地當季食材" checked onchange="updatePledgeCard()" class="accent-amber-600 w-4 h-4">
+                <span>🏷️ 優先選三章一Q在地食材，縮短食物里程</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Real-time Visual Pledge Card -->
+        <div class="lg:col-span-6 space-y-4">
+          <div class="bg-gradient-to-br from-green-800 via-emerald-700 to-teal-800 rounded-3xl p-6 sm:p-8 text-white shadow-xl border-4 border-amber-400 relative overflow-hidden">
+            <div class="flex items-center justify-between mb-5">
+              <span class="bg-amber-400 text-green-950 text-xs font-black px-3.5 py-1 rounded-full tracking-wider">
+                府城低碳小尖兵承諾卡
+              </span>
+              <span class="text-2xl">🌱🍱🌍</span>
+            </div>
+
+            <div class="bg-white text-slate-900 rounded-2xl p-6 shadow-md space-y-4">
+              <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+                <div>
+                  <div class="text-[11px] font-bold text-slate-400">認證小尖兵</div>
+                  <div id="card-preview-name" class="text-xl font-black text-green-800">五年甲班 綠能小尖兵</div>
+                </div>
+                <div class="text-right">
+                  <div class="text-[11px] font-bold text-slate-400">食物里程等級</div>
+                  <div class="text-xs font-black bg-green-100 text-green-800 px-2.5 py-1 rounded-full mt-0.5">🟢 臺南在地零碳首選</div>
+                </div>
+              </div>
+
+              <div>
+                <div class="text-xs font-extrabold text-slate-500 mb-2">📍 我推薦的臺南在地低碳一餐：</div>
+                <div id="card-preview-foods" class="flex flex-wrap gap-2">
+                  <!-- Populated by JS -->
+                </div>
+              </div>
+
+              <div class="bg-amber-50 border border-amber-200 rounded-xl p-3.5 space-y-1.5">
+                <div class="text-xs font-extrabold text-amber-900">✍️ 我的綠色生活行動承諾：</div>
+                <ul id="card-preview-actions" class="text-xs font-bold text-slate-700 space-y-1">
+                  <!-- Populated by JS -->
+                </ul>
+              </div>
+            </div>
+
+            <div class="mt-5 flex flex-wrap items-center justify-between gap-3">
+              <span class="text-xs text-emerald-100 font-bold">SDGs 12 責任消費與生產・臺南零碳餐桌</span>
+              <div class="no-print flex items-center gap-2">
+                <button onclick="copyPledgeCardText()" class="px-4 py-2 rounded-xl bg-amber-400 hover:bg-amber-300 text-green-950 text-xs font-black shadow transition cursor-pointer">
+                  📋 一鍵複製分享文字
+                </button>
+                <button onclick="window.print()" class="px-3.5 py-2 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-extrabold transition cursor-pointer">
+                  🖨️ 列印承諾卡
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div id="pledge-copy-toast" class="hidden bg-slate-900 text-amber-300 text-xs font-black text-center py-2.5 px-4 rounded-2xl shadow">
+            ✅ 已將你的「府城低碳小尖兵承諾卡」文字複製到剪貼簿，快貼給同學和家人分享吧！
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- 分頁八：🔒 課程總覽（專屬密碼 991201 保護區）               -->
+    <!-- ========================================================= -->
+    <section id="tab-overview" class="tab-panel space-y-8">
+      
+      <!-- Password Gate (Shown only when locked) -->
+      <div id="overview-lock-gate" class="max-w-md mx-auto my-6 bg-gradient-to-br from-slate-900 via-green-950 to-emerald-950 rounded-3xl p-7 sm:p-8 text-white shadow-2xl border border-amber-400/40">
+        <div class="text-center space-y-2 mb-6">
+          <div class="w-16 h-16 mx-auto rounded-2xl bg-amber-400/20 border border-amber-400/50 flex items-center justify-center text-3xl shadow-inner">
+            🔒
+          </div>
+          <span class="inline-block text-[11px] font-black tracking-widest uppercase text-amber-300 bg-amber-500/20 px-3 py-1 rounded-full">
+            教學團隊專用密碼保護區
+          </span>
+          <h2 class="text-xl font-black text-white">請輸入密碼解鎖「課程總覽」</h2>
+          <p class="text-xs text-slate-300">其餘七個學習分頁皆免密碼公開閱覽；輸入教學團隊專用密碼即可檢視完整 14 節課程架構與教學鷹架策略。</p>
+        </div>
+
+        <!-- Direct Input Form + Keypad -->
+        <div class="space-y-4">
+          <div class="flex gap-2">
+            <input type="password" id="overview-pin-input" maxlength="6" placeholder="請輸入 6 位數專用密碼" onkeydown="if(event.key==='Enter') checkOverviewPin()" class="flex-grow px-4 py-3 rounded-xl bg-white/10 border border-white/25 text-center text-lg font-black tracking-widest text-white placeholder-slate-400 focus:outline-none focus:border-amber-400">
+            <button onclick="checkOverviewPin()" class="px-5 py-3 rounded-xl bg-amber-400 hover:bg-amber-300 text-green-950 font-black text-sm shadow transition cursor-pointer">
+              解鎖
+            </button>
+          </div>
+
+          <p id="overview-pin-error" class="opacity-0 text-center text-xs font-extrabold text-amber-300 bg-rose-500/25 border border-rose-400/40 py-2 px-3 rounded-xl transition-opacity">
+            ⚠️ 密碼不正確喔！請確認教學團隊專用密碼後再試一次。
+          </p>
+        </div>
+      </div>
+
+      <!-- Unlocked Content (Hidden until 991201 verified) -->
+      <div id="overview-unlocked-content" class="hidden space-y-8">
+        
+        <!-- Four Subtraction & Scaffolding Strategies -->
+        <div class="bg-white rounded-3xl shadow-sm border-l-8 border-green-700 p-6 sm:p-8 space-y-5">
+          <div>
+            <span class="text-xs font-extrabold text-green-700 uppercase tracking-wider">專為 10 歲零基礎孩子設計的教學設計核心</span>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">四大減法與教學鷹架策略說明</h2>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs sm:text-sm">
+            <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 space-y-1">
+              <h3 class="font-black text-green-900 text-base">策略一：移除高抽象數學循線，聚焦核心任務</h3>
+              <p class="text-slate-700 leading-relaxed">
+                捨棄對五年級初學者過於抽象的「四分法反射光巢狀計算」與「三條道路複雜轉向掉頭」，保留最直覺的「遇黑線自動煞停」與「三色食材辨識分流」，確保每堂課都能產出成功作品。
+              </p>
+            </div>
+
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 space-y-1">
+              <h3 class="font-black text-amber-950 text-base">策略二：提供「陀螺儀半成品範本（Starter Project）」</h3>
+              <p class="text-slate-700 leading-relaxed">
+                將困難的 <code class="bg-white px-1.5 py-0.5 rounded font-bold">-180°</code> 溢位數學計算封裝進教師提供的 <code class="bg-white px-1.5 py-0.5 rounded font-bold">YAW-sub</code> 積木包中，五年級孩子只需像調整冷氣一樣微調前進速度與修正力道，就能體驗走最短直線的成就感。
+              </p>
+            </div>
+
+            <div class="bg-sky-50 border border-sky-200 rounded-2xl p-4 space-y-1">
+              <h3 class="font-black text-sky-950 text-base">策略三：先 Scratch 模擬奠基，後 LEGO 實體挑戰</h3>
+              <p class="text-slate-700 leading-relaxed">
+                前 4 節先在電腦上用「俯視版樂高競賽底圖」建立迴圈、條件停止與一位小數碳排變數概念，第 5 節起轉入實體樂高車，大幅降低硬體除錯焦慮。
+              </p>
+            </div>
+
+            <div class="bg-purple-50 border border-purple-200 rounded-2xl p-4 space-y-1">
+              <h3 class="font-black text-purple-950 text-base">策略四：「一課一重點」＋自我檢核與排錯卡</h3>
+              <p class="text-slate-700 leading-relaxed">
+                每週連堂聚焦單一目標，搭配「出車前四大工程黃金法則自我檢核表」與「四格常見排錯提示」，培養 10 歲孩子自己找 bug 的工程師素養。
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Complete 7-Week 14-Session Spiral Curriculum Table -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-8 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-4">
+            <div>
+              <span class="text-xs font-extrabold text-green-700 uppercase tracking-wider">7 週 14 節完整教學進度規劃（每週 2 節連堂）</span>
+              <h2 class="text-xl font-black text-slate-900">雙階段螺旋課程進度總表</h2>
+            </div>
+            <span class="text-xs font-bold bg-amber-100 text-amber-900 px-3 py-1 rounded-full">第一階段 Scratch（1–4節）➔ 第二階段 LEGO（5–14節）</span>
+          </div>
+
+          <div class="overflow-x-auto rounded-2xl border border-slate-200">
+            <table class="w-full text-left border-collapse text-xs sm:text-sm">
+              <thead>
+                <tr class="bg-green-900 text-white">
+                  <th class="py-3 px-4 font-extrabold">週次與節次</th>
+                  <th class="py-3 px-4 font-extrabold">單元主題</th>
+                  <th class="py-3 px-4 font-extrabold">喚起的中年級舊經驗</th>
+                  <th class="py-3 px-4 font-extrabold">核心實作任務與教學鷹架策略</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr class="bg-amber-50/40">
+                  <td class="py-3 px-4 font-black text-amber-900">第 1 週（第 1–2 節）</td>
+                  <td class="py-3 px-4 font-extrabold text-slate-900">Scratch 貨車考照與自動煞停</td>
+                  <td class="py-3 px-4 text-slate-600">三年級公分長度、四年級直角 90°、紅燈停規則</td>
+                  <td class="py-3 px-4 text-slate-700">使用俯視賽道範本，撰寫 <code class="bg-slate-100 px-1 rounded">重複 4 次</code> 走正方形與 <code class="bg-slate-100 px-1 rounded">重複直到碰到紅色</code> 煞停（銜接單元 07、13）。</td>
+                </tr>
+                <tr class="bg-amber-50/40">
+                  <td class="py-3 px-4 font-black text-amber-900">第 2 週（第 3–4 節）</td>
+                  <td class="py-3 px-4 font-extrabold text-slate-900">Scratch 產地分流與碳排儀表板</td>
+                  <td class="py-3 px-4 text-slate-600">中年級社會家鄉物產、四年級一位小數加減</td>
+                  <td class="py-3 px-4 text-slate-700">建立「產地檢查」巢狀判斷積木分流三色箱，並用變數累加 <code class="bg-slate-100 px-1 rounded">+0.2 / +1.5 / +8.0</code> 碳排數值（銜接單元 18、19）。</td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4 font-black text-sky-900">第 3 週（第 5–6 節）</td>
+                  <td class="py-3 px-4 font-extrabold text-slate-900">LEGO 關卡一：物流車基本路試</td>
+                  <td class="py-3 px-4 text-slate-600">自然 <code class="font-bold">INd-Ⅱ-6/7</code> 推力與摩擦力、公分測量</td>
+                  <td class="py-3 px-4 text-slate-700">組裝雙輪底盤（馬達 A、E），實測 30cm 輪圈換算，加裝車底顏感 D 寫出「遇黑線主動 <code class="bg-slate-100 px-1 rounded">stop moving</code>」。</td>
+                </tr>
+                <tr class="bg-slate-50/60">
+                  <td class="py-3 px-4 font-black text-sky-900">第 4 週（第 7–8 節）</td>
+                  <td class="py-3 px-4 font-extrabold text-slate-900">LEGO 關卡二：產地掃描與三色分流</td>
+                  <td class="py-3 px-4 text-slate-600">自然 <code class="font-bold">INb-Ⅱ-5</code> 光反射、量角器角度定位</td>
+                  <td class="py-3 px-4 text-slate-700">加裝水平顏感 F（保持 1cm 最佳視距）與頂置馬達 C，寫出綠（225°左）、黃（275°中）、紅（325°右）巢狀分流程式。</td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4 font-black text-sky-900">第 5 週（第 9–10 節）</td>
+                  <td class="py-3 px-4 font-extrabold text-slate-900">LEGO 關卡三：田野巡航邊走邊收</td>
+                  <td class="py-3 px-4 text-slate-600">生活問題拆解與步驟模組化概念</td>
+                  <td class="py-3 px-4 text-slate-700">將分類積木封裝為自訂副程式 <code class="bg-slate-100 px-1 rounded">Color Check</code>，偵測到三色食材即暫停分檢、收好繼續前進。</td>
+                </tr>
+                <tr class="bg-slate-50/60">
+                  <td class="py-3 px-4 font-black text-sky-900">第 6 週（第 11–12 節）</td>
+                  <td class="py-3 px-4 font-extrabold text-slate-900">LEGO 關卡四：八字導流與陀螺儀範本</td>
+                  <td class="py-3 px-4 text-slate-600">線對稱圖形、自然 <code class="font-bold">INg-Ⅱ-2</code> 節約能源</td>
+                  <td class="py-3 px-4 text-slate-700">組裝八字導流滑靴與抗扭斜撐，套用老師提供的 <code class="bg-slate-100 px-1 rounded">YAW-sub</code> 直線半成品範本微調速度與終點分區卸貨。</td>
+                </tr>
+                <tr class="bg-green-50/70">
+                  <td class="py-3 px-4 font-black text-green-900">第 7 週（第 13–14 節）</td>
+                  <td class="py-3 px-4 font-extrabold text-green-950">終極任務：《府城低碳物流爭霸戰》</td>
+                  <td class="py-3 px-4 text-green-900">小數加減結算、永續飲食行動素養</td>
+                  <td class="py-3 px-4 text-green-950">90 秒單線直送競賽、現場雙軌計分與碳足跡儀表板對比，完成「我的臺南低碳一餐承諾卡」。</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==================== 頁尾 ==================== -->
+  <footer class="bg-green-950 text-emerald-200 py-6 text-center text-xs mt-12">
+    <div class="max-w-7xl mx-auto px-4 space-y-1">
+      <p class="font-black text-white">府城綠色食光：食物里程與 AI 智慧低碳物流車</p>
+      <p>五年級跨域 PBL 專案（自然科學 × 數學 × 運算思維 × LEGO SPIKE Prime）</p>
+    </div>
+  </footer>
+
+  <!-- ==================== JAVASCRIPT INTERACTIVITY ==================== -->
+  <script>
+    // 1. Tab Switching Logic
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.classList.remove('active');
+      });
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      const targetPanel = document.getElementById(tabId);
+      const targetBtn = document.getElementById('btn-' + tabId);
+      if (targetPanel) targetPanel.classList.add('active');
+      if (targetBtn) targetBtn.classList.add('active');
+    }
+
+    // 2. Password Protection (ONLY for tab-overview, PIN: 991201)
+    const OVERVIEW_PIN = "991201";
+
+    function checkOverviewPin() {
+      const inputEl = document.getElementById('overview-pin-input');
+      const errorEl = document.getElementById('overview-pin-error');
+      const gateEl = document.getElementById('overview-lock-gate');
+      const val = inputEl.value.trim();
+
+      if (val === OVERVIEW_PIN) {
+        sessionStorage.setItem('tainan_overview_unlocked', 'true');
+        unlockOverviewUI();
+      } else {
+        errorEl.classList.remove('opacity-0');
+        gateEl.classList.remove('animate-shake');
+        void gateEl.offsetWidth;
+        gateEl.classList.add('animate-shake');
+        inputEl.value = '';
+        inputEl.focus();
+      }
+    }
+
+    function unlockOverviewUI() {
+      document.getElementById('overview-lock-gate').classList.add('hidden');
+      document.getElementById('overview-unlocked-content').classList.remove('hidden');
+      document.getElementById('overview-lock-icon').textContent = '🔓';
+      document.getElementById('relock-btn').classList.remove('hidden');
+      document.getElementById('overview-pin-error').classList.add('opacity-0');
+    }
+
+    function lockOverviewTab() {
+      sessionStorage.removeItem('tainan_overview_unlocked');
+      document.getElementById('overview-unlocked-content').classList.add('hidden');
+      document.getElementById('overview-lock-gate').classList.remove('hidden');
+      document.getElementById('overview-lock-icon').textContent = '🔒';
+      document.getElementById('relock-btn').classList.add('hidden');
+      document.getElementById('overview-pin-input').value = '';
+    }
+
+    // 3. 分頁二：「餐桌產地小偵探」互動分類小測驗 (6 題)
+    const detectiveQuestions = [
+      {
+        id: 1,
+        title: "🐚 七股鮮甜文蛤",
+        hint: "臺南七股沿海魚塭清晨現撈，直接送往市區營養午餐",
+        answer: "green",
+        carbon: "0.2 kg CO₂e",
+        detail: "臺南在地養殖，食物里程極短、新鮮又零冷鏈負擔！"
+      },
+      {
+        id: 2,
+        title: "🐟 學甲新鮮虱目魚",
+        hint: "臺南學甲在地魚塭產地直送，是府城經典在地美味",
+        answer: "green",
+        carbon: "0.2 kg CO₂e",
+        detail: "距離市區僅約 30 公里，屬於低碳綠色在地旬味！"
+      },
+      {
+        id: 3,
+        title: "🥭 屏東愛文芒果",
+        hint: "從臺灣最南端的屏東產地，透過國道貨車運送到臺南",
+        answer: "yellow",
+        carbon: "1.5 kg CO₂e",
+        detail: "臺灣本島跨縣市公路運輸，屬於中等里程黃色食材。"
+      },
+      {
+        id: 4,
+        title: "🥬 台中梨山高麗菜",
+        hint: "從中部高山產地採收後，經由公路貨車長途南下配送",
+        answer: "yellow",
+        carbon: "1.5 kg CO₂e",
+        detail: "跨縣市山區與高速公路運輸，屬於國內中程黃色食材。"
+      },
+      {
+        id: 5,
+        title: "🥩 美國冷凍牛排",
+        hint: "跨越太平洋海運與低溫冷凍貨櫃長途進口來臺",
+        answer: "red",
+        carbon: "8.0 kg CO₂e",
+        detail: "跨國長途運輸加上全程冷凍耗電，1 箱碳排等於 40 箱在地青菜！"
+      },
+      {
+        id: 6,
+        title: "🍎 日本進口蘋果",
+        hint: "從日本產地跨海空運與冷藏倉儲進口至臺灣超市",
+        answer: "red",
+        carbon: "8.0 kg CO₂e",
+        detail: "跨海空運與冷藏設備消耗大量能源，屬於高碳排紅色進口食材。"
+      }
+    ];
+    let detectiveAnswers = {};
+
+    function renderDetectiveQuiz() {
+      const grid = document.getElementById('detective-grid');
+      if (!grid) return;
+      grid.innerHTML = detectiveQuestions.map(q => {
+        const picked = detectiveAnswers[q.id];
+        let feedback = '';
+        if (picked) {
+          const isRight = picked === q.answer;
+          feedback = isRight
+            ? `<div class="mt-2.5 p-2.5 rounded-xl bg-green-50 border border-green-300 text-xs text-green-900">
+                 <div class="font-black text-green-700">✅ 答對了！碳排約 ${q.carbon}</div>
+                 <p class="mt-0.5 text-[11px]">${q.detail}</p>
+               </div>`
+            : `<div class="mt-2.5 p-2.5 rounded-xl bg-rose-50 border border-rose-300 text-xs text-rose-900">
+                 <div class="font-black text-rose-700">❌ 再想想看！此食材碳排為 ${q.carbon}</div>
+                 <p class="mt-0.5 text-[11px]">${q.detail}</p>
+               </div>`;
+        }
+        return `
+          <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 flex flex-col justify-between">
+            <div>
+              <div class="font-black text-slate-900 text-base">${q.title}</div>
+              <p class="text-xs text-slate-600 mt-1 mb-3 leading-relaxed">${q.hint}</p>
+            </div>
+            <div>
+              <div class="grid grid-cols-3 gap-1.5 text-xs font-extrabold">
+                <button onclick="answerDetective(${q.id}, 'green')" class="py-2 rounded-xl border ${picked === 'green' ? 'bg-green-700 text-white border-green-800' : 'bg-white text-green-800 border-green-300 hover:bg-green-50'} transition cursor-pointer">🟢 在地</button>
+                <button onclick="answerDetective(${q.id}, 'yellow')" class="py-2 rounded-xl border ${picked === 'yellow' ? 'bg-amber-500 text-white border-amber-600' : 'bg-white text-amber-800 border-amber-300 hover:bg-amber-50'} transition cursor-pointer">🟡 國內</button>
+                <button onclick="answerDetective(${q.id}, 'red')" class="py-2 rounded-xl border ${picked === 'red' ? 'bg-rose-600 text-white border-rose-700' : 'bg-white text-rose-800 border-rose-300 hover:bg-rose-50'} transition cursor-pointer">🔴 進口</button>
+              </div>
+              ${feedback}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function answerDetective(id, choice) {
+      detectiveAnswers[id] = choice;
+      let score = 0;
+      detectiveQuestions.forEach(q => {
+        if (detectiveAnswers[q.id] === q.answer) score++;
+      });
+      document.getElementById('detective-score').textContent = score;
+      renderDetectiveQuiz();
+    }
+
+    // 4. 分頁三：「虛實摩擦對比暨光感差速模擬器」 (單元 13 二分法 vs 單元 14 四分法)
+    let currentLineMode = 'four'; // 'two' or 'four'
+
+    function setLineMode(mode) {
+      currentLineMode = mode;
+      const btnTwo = document.getElementById('btn-mode-two');
+      const btnFour = document.getElementById('btn-mode-four');
+      if (mode === 'two') {
+        btnTwo.className = "px-3.5 py-2 rounded-xl text-xs font-extrabold bg-amber-500 text-slate-950 shadow transition cursor-pointer";
+        btnFour.className = "px-3.5 py-2 rounded-xl text-xs font-extrabold text-slate-300 hover:text-white transition cursor-pointer";
+      } else {
+        btnTwo.className = "px-3.5 py-2 rounded-xl text-xs font-extrabold text-slate-300 hover:text-white transition cursor-pointer";
+        btnFour.className = "px-3.5 py-2 rounded-xl text-xs font-extrabold bg-green-600 text-white shadow transition cursor-pointer";
+      }
+      updateScienceSim();
+    }
+
+    function updateScienceSim() {
+      const slider = document.getElementById('sci-reflect-slider');
+      if (!slider) return;
+      const val = parseInt(slider.value, 10);
+      document.getElementById('sci-reflect-val').textContent = val;
+
+      // Move dot along 15% ~ 98% bar
+      const pct = ((val - 15) / (98 - 15)) * 100;
+      document.getElementById('sci-sensor-dot').style.left = `${pct}%`;
+
+      let leftPwr = 30;
+      let rightPwr = 30;
+      let carAngle = 0;
+      let zoneTag = "";
+      let stateText = "";
+      let explainText = "";
+      let energyBoxClass = "";
+      let energyTitle = "";
+      let energyDesc = "";
+
+      if (currentLineMode === 'two') {
+        // 單元 13 二分法（以 58% 為界，非左即右大擺頭）
+        if (val < 58) {
+          leftPwr = 35;
+          rightPwr = 10;
+          carAngle = 24;
+          zoneTag = "二分法判斷：黑線區（＜ 58%）";
+          stateText = "↗️ 大幅向右急轉（Z 字型擺頭）";
+          explainText = `反射光 ${val}% ＜ 58%：二分法只分成兩區，左輪全速 (35%)、右輪急減速 (10%)，車頭大幅向右甩出！`;
+        } else {
+          leftPwr = 10;
+          rightPwr = 35;
+          carAngle = -24;
+          zoneTag = "二分法判斷：白底區（≥ 58%）";
+          stateText = "↖️ 大幅向左急轉（Z 字型擺頭）";
+          explainText = `反射光 ${val}% ≥ 58%：右輪全速 (35%)、左輪急減速 (10%)，車頭大幅向左甩回，造成連續蛇行！`;
+        }
+        energyBoxClass = "rounded-xl p-4 bg-amber-50 border-2 border-amber-400 space-y-1";
+        energyTitle = "⚠️ 能源消耗評估：偏高（左右大擺頭蛇行耗電）";
+        energyDesc = "二分法只有「大左轉」與「大右轉」兩種動作，車身左右劇烈搖晃會多走冤枉路、浪費電池電力，也容易晃掉生鮮食材！";
+      } else {
+        // 單元 14 四分法平滑微調（絲滑直線）
+        if (val < 38) {
+          leftPwr = 32;
+          rightPwr = 16;
+          carAngle = 14;
+          zoneTag = "四分法區間 ①：深黑線內部（＜ 38%）";
+          stateText = "↗️ 中度向右修正（平穩拉回交界）";
+          explainText = `反射光 ${val}% 偏深黑：左輪 (32%) ＞ 右輪 (16%)，溫和將車頭向右引導回黑白交界線。`;
+        } else if (val < 58) {
+          leftPwr = 30;
+          rightPwr = 24;
+          carAngle = 5;
+          zoneTag = "四分法區間 ②：交界偏黑側（38% ~ 57%）";
+          stateText = "↗️ 微幅向右平滑微調（幾乎直線）";
+          explainText = `反射光 ${val}% 非常接近 58% 交界：僅以極小差速（30% vs 24%）細膩微調，車身完全不搖晃！`;
+        } else if (val <= 78) {
+          leftPwr = 24;
+          rightPwr = 30;
+          carAngle = -5;
+          zoneTag = "四分法區間 ③：交界偏白側（58% ~ 78%）";
+          stateText = "↖️ 微幅向左平滑微調（幾乎直線）";
+          explainText = `反射光 ${val}% 剛越過 58% 交界：僅以極小差速（24% vs 30%）細膩拉回，維持絲滑直線前進！`;
+        } else {
+          leftPwr = 16;
+          rightPwr = 32;
+          carAngle = -14;
+          zoneTag = "四分法區間 ④：全白底外側（＞ 78%）";
+          stateText = "↖️ 中度向左修正（平穩拉回交界）";
+          explainText = `反射光 ${val}% 偏全白底：右輪 (32%) ＞ 左輪 (16%)，平穩將車頭向左拉回軌道交界。`;
+        }
+        energyBoxClass = "rounded-xl p-4 bg-green-50 border-2 border-green-500 space-y-1";
+        energyTitle = "⚡ 能源消耗評估：極佳（絲滑直線，省電減碳）";
+        energyDesc = "四分法依偏離程度進行平滑微調，走幾何距離最短的筆直路徑，大幅降低電池耗電量並保護生鮮蔬果不碰撞！";
+      }
+
+      // Rotate Mini SVG Car
+      const carSvg = document.getElementById('sci-car-svg');
+      if (carSvg) {
+        const offsetX = (pct - 51.8) * 0.45;
+        carSvg.setAttribute('transform', `translate(${110 + offsetX}, 65) rotate(${carAngle})`);
+      }
+
+      document.getElementById('sci-zone-tag').textContent = zoneTag;
+      document.getElementById('sci-car-state').textContent = stateText;
+      document.getElementById('sci-car-explain').textContent = explainText;
+      document.getElementById('sci-left-pwr').textContent = leftPwr;
+      document.getElementById('sci-right-pwr').textContent = rightPwr;
+      document.getElementById('sci-left-bar').style.width = `${(leftPwr / 40) * 100}%`;
+      document.getElementById('sci-right-bar').style.width = `${(rightPwr / 40) * 100}%`;
+
+      const energyBox = document.getElementById('sci-energy-box');
+      energyBox.className = energyBoxClass;
+      document.getElementById('sci-energy-title').textContent = energyTitle;
+      document.getElementById('sci-energy-desc').textContent = energyDesc;
+    }
+
+    // 5. 分頁四：Scratch 3.0 與 LEGO SPIKE Prime 虛實轉換互動對照器
+    const simRealItems = [
+      {
+        scratch: "點擊綠旗後，小貨車一鍵瞬間回到 (x, y) 起點座標並面朝 90 度。",
+        lego: "必須先宣告馬達端口（set movement motors to A+E）、陀螺儀歸零（set yaw angle to 0），並讓分流馬達 C 回到 275° 正中央。",
+        diff: "⚠️ 物理差異提醒：實體機器人不會自動歸位！每次出發前若忘記宣告端口或沒讓撥桿回到 275°，一啟動就會卡住或走歪。"
+      },
+      {
+        scratch: "「移動 100 點」在螢幕座標上永遠精準無誤差，不會因為跑太多次而變慢。",
+        lego: "使用「move ↑ for 30 cm」或「輪胎圈數」，實際前進距離會受輪胎圓周（17.5 cm）、教室地板摩擦力與電池電量影響。",
+        diff: "⚠️ 物理差異提醒：start moving 是「踩油門不放」，必須搭配距離或感測器停止，否則物流車會直接衝出賽道！"
+      },
+      {
+        scratch: "「右轉 90 度」代表貨車在舞台上原地旋轉標準直角 90 度。",
+        lego: "動作積木裡的「0.6 rotations」是指輪胎轉動圈數，不是車身角度！要靠主機內建「陀螺儀 yaw angle = -90」才能測量車身轉了幾度。",
+        diff: "⚠️ 物理差異提醒：輪胎轉 1 圈不等於車子轉 360 度，不同車身寬度需要實際測試輪胎圈數或使用陀螺儀判斷角度。"
+      },
+      {
+        scratch: "螢幕色碼 RGB 絕對精準，無論教室窗簾有沒有拉上都能 100% 認出顏色。",
+        lego: "顏色感測器像手電筒打光並接收反射（INb-Ⅱ-5），受教室日光燈反光與離地高度（最佳 0.8~1.2 公分）影響極大。",
+        diff: "⚠️ 物理差異提醒：同一塊綠色積木若距離太遠可能被誤判成藍色，務必保持「約一根手指寬（1 公分）」的最佳視距！"
+      },
+      {
+        scratch: "切換造型或廣播訊息讓箱子飛進倉庫，永遠不會發生機械卡死。",
+        lego: "馬達 C 轉動帶動分流撥桿三向定位（左 225° / 中 275° / 右 325°），若通道太窄夾住積木，撥桿轉不到目標角度會使程式停住。",
+        diff: "⚠️ 物理差異提醒：組裝八字導流滑靴時要保留順暢通道寬度，並加上物理限位避免連桿過度旋轉。"
+      },
+      {
+        scratch: "跳出「重複直到碰到紅色」迴圈後，小貨車立刻停在原地不會滑行。",
+        lego: "跳出「repeat until (車底顏感 D 偵測到黑線)」後，必須緊接一塊「stop moving」主動踩煞車！",
+        diff: "⚠️ 物理差異提醒：沒有加上 stop moving 踩煞車，馬達會維持最後動力繼續往前衝，把終點區的食材全部撞飛！"
+      }
+    ];
+
+    function showSimReal(idx) {
+      document.querySelectorAll('.sr-card').forEach((btn, i) => {
+        btn.className = i === idx
+          ? "sr-card p-3 rounded-2xl text-xs font-black bg-green-700 text-white shadow cursor-pointer text-center"
+          : "sr-card p-3 rounded-2xl text-xs font-black bg-slate-100 text-slate-700 hover:bg-slate-200 cursor-pointer text-center";
+      });
+      const item = simRealItems[idx];
+      document.getElementById('sr-detail-box').innerHTML = `
+        <div class="bg-white p-4 rounded-2xl border border-amber-200 space-y-1">
+          <div class="text-xs font-black text-amber-600">💻 Scratch 3.0 積木寫法（虛擬舞台）</div>
+          <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">${item.scratch}</p>
+        </div>
+        <div class="bg-white p-4 rounded-2xl border border-sky-200 space-y-1">
+          <div class="text-xs font-black text-sky-700">🤖 LEGO SPIKE Prime 寫法（實體車體）</div>
+          <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">${item.lego}</p>
+        </div>
+        <div class="bg-rose-50 p-4 rounded-2xl border border-rose-200 flex items-center">
+          <p class="text-xs sm:text-sm font-bold text-rose-900 leading-relaxed">${item.diff}</p>
+        </div>
+      `;
+    }
+
+    // 6. 分頁五：LEGO 工程藍圖熱點連動高亮 & 四大黃金法則勾選清單
+    function highlightConcept(conceptId) {
+      document.querySelectorAll('.concept-card').forEach(card => {
+        if (card.id === conceptId) {
+          card.classList.add('highlighted');
+          card.classList.remove('dimmed');
+          card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+          card.classList.remove('highlighted');
+          card.classList.add('dimmed');
+        }
+      });
+      document.getElementById('btn-clear-hl').classList.remove('hidden');
+    }
+
+    function clearConceptHighlight() {
+      document.querySelectorAll('.concept-card').forEach(card => {
+        card.classList.remove('highlighted', 'dimmed');
+      });
+      document.getElementById('btn-clear-hl').classList.add('hidden');
+    }
+
+    function updateGoldenChecklist() {
+      const total = document.querySelectorAll('.golden-cb').length;
+      const checked = document.querySelectorAll('.golden-cb:checked').length;
+      const badge = document.getElementById('checklist-badge');
+      if (checked === total) {
+        badge.textContent = "🎉 4 / 4 項全數通過！可以出車！";
+        badge.className = "text-xs font-black bg-green-700 text-white px-3 py-0.5 rounded-full shadow";
+      } else {
+        badge.textContent = `已檢核 ${checked} / ${total} 項`;
+        badge.className = "text-xs font-black bg-white text-amber-800 border border-amber-300 px-2.5 py-0.5 rounded-full";
+      }
+    }
+
+    // 7. 分頁六：雙軌計分與碳足跡即時模擬器
+    let compState = { green: 2, yellow: 1, red: 0 };
+
+    function updateCompCount(type, delta) {
+      const next = compState[type] + delta;
+      if (next >= 0 && next <= 4) {
+        compState[type] = next;
+        document.getElementById(`comp-${type}-num`).textContent = next;
+        renderCompResult();
+      }
+    }
+
+    function resetCompSim() {
+      compState = { green: 2, yellow: 1, red: 0 };
+      document.getElementById('comp-green-num').textContent = 2;
+      document.getElementById('comp-yellow-num').textContent = 1;
+      document.getElementById('comp-red-num').textContent = 0;
+      document.getElementById('comp-sec-slider').value = 20;
+      renderCompResult();
+    }
+
+    function renderCompResult() {
+      const sec = parseInt(document.getElementById('comp-sec-slider').value, 10);
+      document.getElementById('comp-sec-num').textContent = sec;
+
+      const totalItems = compState.green + compState.yellow + compState.red;
+      const itemScore = (compState.green * 150) + (compState.yellow * 100) + (compState.red * 50);
+      const timeBonus = totalItems >= 2 ? (sec * 2) : 0;
+      const totalScore = itemScore + timeBonus;
+
+      const hintEl = document.getElementById('comp-sec-hint');
+      if (totalItems >= 2) {
+        hintEl.textContent = `✅ 已送達 ${totalItems} 顆有效食材，獲得直線節能時間獎勵 +${timeBonus} 分！`;
+        hintEl.className = "text-xs text-emerald-300 font-bold";
+      } else {
+        hintEl.textContent = `⚠️ 目前有效食材僅 ${totalItems} 顆（需滿 2 顆才啟動剩餘秒數加分）。`;
+        hintEl.className = "text-xs text-amber-300 font-bold";
+      }
+
+      const totalCarbon = (compState.green * 0.2) + (compState.yellow * 1.5) + (compState.red * 8.0);
+      const veggieEquiv = Math.round(totalCarbon / 0.2);
+
+      document.getElementById('comp-total-score').textContent = totalScore;
+      document.getElementById('comp-total-carbon').textContent = totalCarbon.toFixed(1);
+      document.getElementById('comp-veggie-equiv').textContent = veggieEquiv;
+
+      const awardBox = document.getElementById('comp-award-box');
+      const awardTitle = document.getElementById('comp-award-title');
+      const awardDesc = document.getElementById('comp-award-desc');
+
+      if (totalItems === 0) {
+        awardBox.className = "rounded-2xl p-4 bg-slate-100 border-2 border-slate-300 space-y-1";
+        awardTitle.className = "text-base font-black text-slate-700";
+        awardTitle.textContent = "🛠️ 工程測試調整中";
+        awardDesc.className = "text-xs text-slate-600 leading-relaxed";
+        awardDesc.textContent = "請增加送達終點區的食材積木數量，觀察任務積分與地球碳排帳單變化！";
+      } else if (totalCarbon <= 2.5 && compState.green >= 2) {
+        awardBox.className = "rounded-2xl p-4 bg-green-50 border-2 border-green-500 space-y-1";
+        awardTitle.className = "text-base font-black text-green-900";
+        awardTitle.textContent = "🏆 低碳守護神大獎（綠能最高榮譽）";
+        awardDesc.className = "text-xs text-green-800 leading-relaxed";
+        awardDesc.textContent = "優先配送臺南在地旬味並走筆直最短路徑，兼顧高任務積分與極低碳排，是最佳綠色物流團隊！";
+      } else if (totalCarbon <= 8.0) {
+        awardBox.className = "rounded-2xl p-4 bg-amber-50 border-2 border-amber-400 space-y-1";
+        awardTitle.className = "text-base font-black text-amber-950";
+        awardTitle.textContent = "🥈 智慧物流穩健獎（中度碳排）";
+        awardDesc.className = "text-xs text-amber-900 leading-relaxed";
+        awardDesc.textContent = "順利完成食材配送任務！若能優先運送綠色在地食材，就能把總碳排降得更低喔！";
+      } else {
+        awardBox.className = "rounded-2xl p-4 bg-rose-50 border-2 border-rose-500 space-y-1";
+        awardTitle.className = "text-base font-black text-rose-900";
+        awardTitle.textContent = "🚨 高碳排飲食警示（紅燈提醒）";
+        awardDesc.className = "text-xs text-rose-800 leading-relaxed";
+        awardDesc.textContent = "本趟搬運了高碳排跨國進口食材（1 顆紅肉等於 40 顆在地青菜碳排），提醒大家日常多選在地當季食材！";
+      }
+    }
+
+    // 8. 分頁七：「我的臺南低碳一餐承諾卡生成器」
+    function updatePledgeCard() {
+      const nameVal = document.getElementById('pledge-student-name').value.trim();
+      document.getElementById('card-preview-name').textContent = nameVal || "五年甲班 綠能小尖兵";
+
+      const foodContainer = document.getElementById('card-preview-foods');
+      foodContainer.innerHTML = '';
+      const checkedFoods = document.querySelectorAll('#pledge-food-checks input:checked');
+      if (checkedFoods.length === 0) {
+        foodContainer.innerHTML = '<span class="text-xs text-slate-400 italic">請在左側勾選臺南在地當季食材...</span>';
+      } else {
+        checkedFoods.forEach(cb => {
+          const tag = document.createElement('span');
+          tag.className = "bg-green-100 text-green-900 border border-green-300 text-xs font-extrabold px-3 py-1 rounded-xl";
+          tag.textContent = cb.value;
+          foodContainer.appendChild(tag);
+        });
+      }
+
+      const actionList = document.getElementById('card-preview-actions');
+      actionList.innerHTML = '';
+      const checkedActions = document.querySelectorAll('#pledge-action-checks input:checked');
+      if (checkedActions.length === 0) {
+        actionList.innerHTML = '<li class="text-slate-400 italic">請勾選你的日常減碳行動承諾...</li>';
+      } else {
+        checkedActions.forEach(cb => {
+          const li = document.createElement('li');
+          li.textContent = "• " + cb.value;
+          actionList.appendChild(li);
+        });
+      }
+    }
+
+    function copyPledgeCardText() {
+      const name = document.getElementById('card-preview-name').textContent;
+      const foods = Array.from(document.getElementById('card-preview-foods').children).map(el => el.textContent).join('、');
+      const actions = Array.from(document.getElementById('card-preview-actions').children).map(el => el.textContent).join('\n');
+      const textToCopy = `【府城綠色食光・府城低碳小尖兵承諾卡】\n認證小尖兵：${name}\n我的臺南在地低碳一餐：${foods}\n我的減碳行動承諾：\n${actions}`;
+
+      const textarea = document.createElement('textarea');
+      textarea.value = textToCopy;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+
+      const toast = document.getElementById('pledge-copy-toast');
+      toast.classList.remove('hidden');
+      setTimeout(() => toast.classList.add('hidden'), 3200);
+    }
+
+    // Initialize All Modules on Page Load
+    window.addEventListener('DOMContentLoaded', () => {
+      if (sessionStorage.getItem('tainan_overview_unlocked') === 'true') {
+        unlockOverviewUI();
+      }
+      renderDetectiveQuiz();
+      updateScienceSim();
+      showSimReal(0);
+      renderCompResult();
+      updatePledgeCard();
+    });
+  </script>
+</body>
+</html>
